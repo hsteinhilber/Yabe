@@ -1,4 +1,6 @@
 Yabe::Application.routes.draw do
+  resources :posts
+
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'
 
