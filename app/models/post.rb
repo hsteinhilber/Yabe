@@ -13,5 +13,7 @@
 class Post < ActiveRecord::Base
   attr_accessible :title, :body
 
-  validates :title, :presence => true
+  validates :title, :presence => true,
+                    :length => { :maximum => 35 }
+  validates :body, :presence => true
 end
