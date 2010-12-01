@@ -9,5 +9,8 @@ describe Post do
     Post.create!(@attr)
   end
 
-  it "should require a title"
+  it "should require a title" do
+    no_title_post = Post.new(@attr.merge(:title => ""))
+    no_title_post.should_not be_valid
+  end
 end
