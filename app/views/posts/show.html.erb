@@ -1,9 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<% div_for @post do %>
-  <h2><%= link_to_unless_current h(@post.title), @post %></h2>
-  <%= simple_format h(@post.body) %>
-<% end %>
+<%= render @post %>
 
 <p>
   <%= link_to 'Edit', edit_post_path(@post) %> |
