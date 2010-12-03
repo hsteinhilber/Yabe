@@ -5,6 +5,7 @@
     <%= csrf_meta_tag %>
     <%= render 'layouts/stylesheets' %>
     <%= javascript_include_tag :defaults %>
+    <%= auto_discovery_link_tag :atom, posts_path(:format => :atom) %>
   </head>
   <body>
     <div class="container">
