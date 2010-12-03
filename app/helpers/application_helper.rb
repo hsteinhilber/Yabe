@@ -1,6 +1,6 @@
 module ApplicationHelper
   def title
-    base_title = "Yet-Another-Blog-Engine (YABE)"
+    base_title = "Random Code Patterns"
     if @title.nil? 
       base_title
     else
