@@ -16,6 +16,14 @@ describe PostsController do
     end
   end
 
+  describe "GET index as atom" do
+    it "should return a feed" do
+      Post.stub(:all) { [mock_post] }
+      get :index, :format => :atom
+      response.should be_success
+    end
+  end
+
   describe "GET show" do
     it "assigns the requested post as @post" do
       Post.stub(:find).with("37") { mock_post }
