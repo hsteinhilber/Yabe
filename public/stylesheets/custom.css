@@ -82,6 +82,32 @@ nav ul li a:hover {
 }
 
 /* Styling */
+.profile {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.main {
+  margin: 0;
+  width: 67%;
+  padding: 1em;
+  display: inline-block;
+}
+
+.sidebar {
+  margin: 0;
+  width: 25%;
+  padding: 1em;
+  vertical-align: top;
+  background: #996;
+  display: inline-block;
+}
+
+.profile img.gravatar {
+  border: 1px solid #999;
+  margin-bottom: -15px;
+}
+
 .round {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
