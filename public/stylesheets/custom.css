@@ -81,6 +81,47 @@ nav ul li a:hover {
   text-decoration: underline;
 }
 
+/* Errors */
+.field_with_errors {
+  margin-top: 10px;
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+.field_with_errors label {
+  color: #fff;
+}
+
+#error_explaination {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px 7px 7px 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#error_explaination h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  margin: -7px;
+  font-size: 8pt;
+  background-color: #c00;
+  color: #fff;
+}
+
+#error_explaination p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#error_explaination ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
 /* Styling */
 .profile {
   width: 100%;
@@ -106,6 +147,10 @@ nav ul li a:hover {
 .profile img.gravatar {
   border: 1px solid #999;
   margin-bottom: -15px;
+}
+
+div.field, div.actions {
+  margin-bottom: 10px;
 }
 
 .round {
