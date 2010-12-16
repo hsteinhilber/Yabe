@@ -179,3 +179,22 @@ input, select {
   -webkit-border-radius: 10px;
   border-radius: 10px;
 }
+
+/* Flash */
+section.flash {
+  margin: 0px;
+  padding: 0px;
+  background: transparent;
+}
+
+section.flash div {
+  -moz-border-radius: 0px 0px 10px 10px;
+  -webkit-border-radius: 0px 0px 10px 10px;
+  border-radius: 0px 0px 10px 10px;
+  border-top: 0px;
+  padding: 8px;
+  margin: 0px;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-align: center;
+}

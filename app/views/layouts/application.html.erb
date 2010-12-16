@@ -9,6 +9,11 @@
   </head>
   <body>
     <div class="container">
+      <section class="flash">
+        <% flash.each do |key, value| %>
+          <div class="<%= key %>"><%= value %></div>
+        <% end %>
+      </section>
       <%= render 'layouts/header' %>   
       <section class="round">
         <%= yield %>
