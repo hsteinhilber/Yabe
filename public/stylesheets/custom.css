@@ -82,20 +82,32 @@ nav ul li a:hover {
 }
 
 /* Errors */
-.field_with_errors {
-  margin-top: 10px;
-  padding: 2px;
-  background-color: red;
-  display: table;
+.field_with_errors input, .field_with_errors select {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: 2px solid #c00;
 }
 
 .field_with_errors label {
-  color: #fff;
+  font-weight: bold;
+}
+
+.field_with_errors label:after {
+  color: #c00;
+  font-weight: bold;
+  content: "  *";
+}
+
+.field_with_errors label:before {
+  color: #c00;
+  font-weight: bold;
+  content: "*  ";
 }
 
 #error_explanation {
   width: 400px;
-  border: 2px solid red;
+  border: 2px solid #c00;
   padding: 7px 7px 12px 7px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
@@ -106,8 +118,8 @@ nav ul li a:hover {
   font-weight: bold;
   padding: 5px 5px 5px 15px;
   margin: -7px;
-  font-size: 8pt;
-  background-color: #c00;
+  font-size: 1em;
+  background-color: #a00;
   color: #fff;
 }
 
@@ -118,8 +130,8 @@ nav ul li a:hover {
 }
 
 #error_explanation ul li {
-  font-size: 12px;
-  list-style: square;
+  font-size: 0.8em;
+  list-style: solid circle;
 }
 
 /* Styling */
@@ -151,6 +163,15 @@ nav ul li a:hover {
 
 div.field, div.actions {
   margin-bottom: 10px;
+}
+
+input, select {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  border: solid 2px black;
+  display: table;
+  padding: 0px 10px;
 }
 
 .round {
