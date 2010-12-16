@@ -10,7 +10,7 @@ class UsersController < ApplicationController
       # Handle success
     else
       @title = "Sign up"
-      render 'new'
+      render :new
     end
   end
 
