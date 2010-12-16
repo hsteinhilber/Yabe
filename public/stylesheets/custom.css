@@ -93,15 +93,15 @@ nav ul li a:hover {
   color: #fff;
 }
 
-#error_explaination {
+#error_explanation {
   width: 400px;
   border: 2px solid red;
-  padding: 7px 7px 7px 12px;
+  padding: 7px 7px 12px 7px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
 }
 
-#error_explaination h2 {
+#error_explanation h2 {
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -111,13 +111,13 @@ nav ul li a:hover {
   color: #fff;
 }
 
-#error_explaination p {
+#error_explanation p {
   color: #333;
   margin-bottom: 0;
   padding: 5px;
 }
 
-#error_explaination ul li {
+#error_explanation ul li {
   font-size: 12px;
   list-style: square;
 }
