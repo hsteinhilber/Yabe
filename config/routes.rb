@@ -4,6 +4,7 @@ Yabe::Application.routes.draw do
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'
+  match '/signup', :to => 'users#new'
 
   root :to => 'posts#index'
 

@@ -1,0 +1,9 @@
+require 'autotest'
+require 'win32console'
+
+Autotest.add_hook :initialize do |autotest|
+  integration_tests = /^spec\/requests\/.*_spec\.rb$/
+  autotest.add_mapping(integration_tests) do
+    autotest.files_matching(integration_tests)
+  end
+end
