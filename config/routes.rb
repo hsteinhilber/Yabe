@@ -1,10 +1,13 @@
 Yabe::Application.routes.draw do
   resources :posts
   resources :users
+  resources :sessions, :only => [:new, :create, :destroy]
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'
   match '/signup', :to => 'users#new'
+  match '/login', :to => 'sessions#new'
+  match '/logout', :to => 'sessions#destroy'
 
   root :to => 'posts#index'
 
