@@ -49,7 +49,7 @@ describe UsersController do
   describe "POST 'create'" do
     describe "failure" do
       before(:each) do
-        @attr = { :name => "", :email => "", :password => "", :password_confirmation => "" }
+        @attr = { :name => "", :email => "", :password => "bad", :password_confirmation => "invalid" }
       end
 
       it "should not create a user" do
@@ -66,6 +66,16 @@ describe UsersController do
       it "should render the 'new' page" do
         post :create, :user => @attr
         response.should render_template('new')
+      end
+
+      it "should clear the password" do
+        post :create, :user => @attr
+        assigns(:user).password.should be_empty
+      end
+
+      it "should clear the confirmation" do
+        post :create, :user => @attr
+        assigns(:user).password_confirmation.should be_empty
       end
     end
     
