@@ -1,6 +1,9 @@
 module ApplicationHelper
+
+  SITE_TITLE = "Random Code Patterns"
+
   def title
-    base_title = "Random Code Patterns"
+    base_title = SITE_TITLE
     if @title.nil? 
       base_title
     else
@@ -9,6 +12,6 @@ module ApplicationHelper
   end
 
   def logo
-    image_tag("logo.png", :alt => "Random Code Patterns", :class => "round")
+    image_tag("logo.png", :alt => SITE_TITLE, :class => "round")
   end
 end
