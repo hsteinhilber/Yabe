@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101222010158) do
+ActiveRecord::Schema.define(:version => 20101222012841) do
 
   create_table "posts", :force => true do |t|
     t.string   "title"
@@ -20,12 +20,12 @@ ActiveRecord::Schema.define(:version => 20101222010158) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
+    t.string   "name",               :limit => 75
+    t.string   "email",              :limit => 75
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "encrypted_password"
-    t.string   "salt"
+    t.string   "encrypted_password", :limit => 64
+    t.string   "salt",               :limit => 64
     t.text     "profile"
   end
 

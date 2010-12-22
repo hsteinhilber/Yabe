@@ -1,15 +1,15 @@
 # == Schema Information
-# Schema version: 20101222010158
+# Schema version: 20101222012841
 #
 # Table name: users
 #
 #  id                 :integer         not null, primary key
-#  name               :string(255)
-#  email              :string(255)
+#  name               :string(75)
+#  email              :string(75)
 #  created_at         :datetime
 #  updated_at         :datetime
-#  encrypted_password :string(255)
-#  salt               :string(255)
+#  encrypted_password :string(64)
+#  salt               :string(64)
 #  profile            :text
 #
 
