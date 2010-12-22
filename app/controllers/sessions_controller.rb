@@ -11,13 +11,13 @@ class SessionsController < ApplicationController
       @title = "Login"
       render :new
     else
-      log_in user
+      login user
       redirect_to user
     end
   end
 
   def destroy
-    log_out
+    logout
     redirect_to root_path
   end
 

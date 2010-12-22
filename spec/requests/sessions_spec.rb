@@ -33,7 +33,7 @@ describe "Sessions" do
       fill_in :password, :with => user.password
       click_button
       visit root_path
-      click_link "Log out"
+      click_link "Logout"
       controller.should_not be_logged_in
     end
   end

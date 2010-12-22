@@ -37,8 +37,8 @@ Spork.prefork do
     # railties/lib/rails/application/bootstrap.rb
     ActiveSupport::Dependencies.clear
 
-    def test_log_in(user)
-      controller.log_in(user)
+    def test_login(user)
+      controller.login(user)
     end
   end
 end
