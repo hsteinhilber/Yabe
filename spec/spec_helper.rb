@@ -40,6 +40,13 @@ Spork.prefork do
     def test_login(user)
       controller.login(user)
     end
+
+    def integration_login(user)
+      visit login_path
+      fill_in :email, :with => user.email
+      fill_in :password, :with => user.password
+      click_button
+    end
   end
 end
 

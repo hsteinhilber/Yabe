@@ -28,10 +28,7 @@ describe "Sessions" do
   describe "logging out" do
     it "should log the user out" do
       user = Factory(:user)
-      visit login_path
-      fill_in :email, :with => user.email
-      fill_in :password, :with => user.password
-      click_button
+      integration_login user
       visit root_path
       click_link "Logout"
       controller.should_not be_logged_in
