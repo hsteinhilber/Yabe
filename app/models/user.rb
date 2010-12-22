@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20101203230348
+# Schema version: 20101222010158
 #
 # Table name: users
 #
@@ -10,7 +10,9 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  profile            :text
 #
+
 require 'digest'
 
 class User < ActiveRecord::Base
