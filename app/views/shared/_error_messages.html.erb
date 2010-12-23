@@ -1,10 +1,10 @@
-<% if @user.errors.any? %>
+<% if object.errors.any? %>
   <div id="error_explanation">
-    <h2>There were <%= pluralize(@user.errors.count, "problem") %>
-        creating your account:</h2>
+    <h2>There were <%= pluralize(object.errors.count, "problem") %>
+      saving your changes to this <%= object.class.to_s.underscore.humanize.downcase %>:</h2>
     <p>Please fix the following fields to continue</p>
     <ul>
-      <% @user.errors.full_messages.each do |msg| %>
+      <% object.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
