@@ -1,9 +1,14 @@
 <h1>Authors</h1>
+
+<%= will_paginate %>
+
 <ul class="authors">
   <% @authors.each do |author| %>
     <li>
-      <%= gravatar_for author, :size => 30 %>
+      <%= gravatar_for author, :size => 50 %>
       <%= link_to author.name, author %>
     </li>
   <% end %>
 </ul>
+
+<%= will_paginate %>

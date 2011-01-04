@@ -45,7 +45,7 @@ class AuthorsController < ApplicationController
 
   def index
     @title = "Authors"
-    @authors = Author.all
+    @authors = Author.paginate(:page => params[:page], :per_page => 10)
   end
 
   private

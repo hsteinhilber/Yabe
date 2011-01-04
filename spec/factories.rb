@@ -4,3 +4,7 @@ Factory.define :author do |author|
   author.password              "secret"
   author.password_confirmation "secret"
 end
+
+Factory.sequence :email do |n|
+  "test-email-#{n+1}@example.com"
+end

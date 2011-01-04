@@ -185,6 +185,7 @@ ul.authors {
 }
 
 .authors li {
+  font-size: 1.5em;
   list-style: none;
   vertical-align: middle;
 }
