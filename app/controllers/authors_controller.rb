@@ -43,6 +43,11 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def index
+    @title = "Authors"
+    @authors = Author.all
+  end
+
   private
     def authenticate
       deny_access unless logged_in?

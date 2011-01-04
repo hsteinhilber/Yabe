@@ -180,6 +180,15 @@ input, select {
   border-radius: 10px;
 }
 
+ul.authors {
+  margin-top: 1em;
+}
+
+.authors li {
+  list-style: none;
+  vertical-align: middle;
+}
+
 /* Flash */
 section.flash {
   margin: 0px;

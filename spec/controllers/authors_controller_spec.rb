@@ -219,4 +219,31 @@ describe AuthorsController do
       end
     end
   end
+
+  describe "GET 'index'" do
+    before(:each) do
+      @author = Factory(:author)
+      second = Factory(:author, :email => "second.user@example.com")
+      third = Factory(:author, :email => "third.user@example.com")
+
+      @authors = [@author, second, third]
+    end
+
+    it "should be successful" do
+      get :index
+      response.should be_success
+    end
+
+    it "should have the right title" do
+      get :index
+      response.should have_selector('title', :content => "Authors")
+    end
+
+    it "should have an element for each author" do
+      get :index
+      @authors.each do |author|
+        response.should have_selector('li', :content => user.name)
+      end
+    end
+  end
 end

@@ -1,0 +1,9 @@
+<h1>Authors</h1>
+<ul class="authors">
+  <% @authors.each do |author| %>
+    <li>
+      <%= gravatar_for author, :size => 30 %>
+      <%= link_to author.name, author %>
+    </li>
+  <% end %>
+</ul>
