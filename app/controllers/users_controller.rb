@@ -27,12 +27,10 @@ class UsersController < ApplicationController
   end
 
   def edit 
-    @user = User.find(params[:id])
     @title = "Profile"
   end
 
   def update
-    @user = User.find(params[:id])
     @user.update_attributes(params[:user])
     if @user.save
       flash[:success] = "Your profile has been updated."
