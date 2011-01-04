@@ -18,7 +18,7 @@ describe SessionsController do
   describe "POST 'create'" do
     describe "invalid login" do
       before(:each) do
-        @attr = { :email => "user@example.com", :password => "invalid" }
+        @attr = { :email => "author@example.com", :password => "invalid" }
       end
 
       it "should re-render the 'new' page" do
@@ -39,27 +39,27 @@ describe SessionsController do
 
     describe "with valid email and password" do
       before(:each) do
-        @user = Factory(:user)
-        @attr = { :email => @user.email, :password => @user.password }
+        @author = Factory(:author)
+        @attr = { :email => @author.email, :password => @author.password }
       end
 
-      it "should log the user in" do
+      it "should log the author in" do
         post :create, :session => @attr
-        controller.current_user.should == @user
+        controller.current_author.should == @author
         controller.should be_logged_in
       end
 
-      it "should redirect to the user show page" do
+      it "should redirect to the author show page" do
         post :create, :session => @attr
-        response.should redirect_to(user_path(@user))
+        response.should redirect_to(author_path(@author))
       end
     end
   end
 
   describe "DELETE 'destroy'" do
 
-    it "should log a user out" do
-      test_login(Factory(:user))
+    it "should log a author out" do
+      test_login(Factory(:author))
       delete :destroy
       controller.should_not be_logged_in
       response.should redirect_to(root_path)

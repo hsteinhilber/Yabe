@@ -1,6 +1,6 @@
-Factory.define :user do |user|
-  user.name                  "Test User"
-  user.email                 "test.user@example.com"
-  user.password              "secret"
-  user.password_confirmation "secret"
+Factory.define :author do |author|
+  author.name                  "Test Author"
+  author.email                 "test.author@example.com"
+  author.password              "secret"
+  author.password_confirmation "secret"
 end

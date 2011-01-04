@@ -1,11 +1,11 @@
 Yabe::Application.routes.draw do
   resources :posts
-  resources :users
+  resources :authors
   resources :sessions, :only => [:new, :create, :destroy]
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'
-  match '/signup', :to => 'users#new'
+  match '/signup', :to => 'authors#new'
   match '/login', :to => 'sessions#new'
   match '/logout', :to => 'sessions#destroy'
 

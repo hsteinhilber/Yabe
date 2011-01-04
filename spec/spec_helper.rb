@@ -37,14 +37,14 @@ Spork.prefork do
     # railties/lib/rails/application/bootstrap.rb
     ActiveSupport::Dependencies.clear
 
-    def test_login(user)
-      controller.login(user)
+    def test_login(author)
+      controller.login(author)
     end
 
-    def integration_login(user)
+    def integration_login(author)
       visit login_path
-      fill_in :email, :with => user.email
-      fill_in :password, :with => user.password
+      fill_in :email, :with => author.email
+      fill_in :password, :with => author.password
       click_button
     end
   end

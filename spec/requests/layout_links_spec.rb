@@ -27,8 +27,8 @@ describe "LayoutLinks" do
 
   describe "when logged in" do
     before(:each) do
-      @user = Factory(:user)
-      integration_login @user
+      @author = Factory(:author)
+      integration_login @author
     end
 
     it "should have a log out link" do
@@ -39,7 +39,7 @@ describe "LayoutLinks" do
 
     it "should have a profile link" do
       visit root_path
-      response.should have_selector("a", :href => user_path(@user),
+      response.should have_selector("a", :href => author_path(@author),
                                          :content => "Profile")
     end
   end

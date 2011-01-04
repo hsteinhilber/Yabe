@@ -1,0 +1,12 @@
+<div class="profile">
+  <div class="main">
+    <h1>
+      <%= gravatar_for @author %>
+      <%= @author.name %>
+    </h1>
+  </div>
+  <div class="sidebar round">
+    <strong>Name</strong> <%= @author.name %><br/>
+    <strong>URL</strong> <%= link_to author_path(@author), @author %>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 # == Schema Information
 # Schema version: 20101222012841
 #
-# Table name: users
+# Table name: authors
 #
 #  id                 :integer         not null, primary key
 #  name               :string(75)
@@ -15,7 +15,7 @@
 
 require 'digest'
 
-class User < ActiveRecord::Base
+class Author < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
 
@@ -34,14 +34,14 @@ class User < ActiveRecord::Base
   end
 
   def self.authenticate(email, submitted_password)
-    user = find_by_email(email)
-    return nil if user.nil?
-    return user if user.has_password?(submitted_password)
+    author = find_by_email(email)
+    return nil if author.nil?
+    return author if author.has_password?(submitted_password)
   end
 
   def self.authenticate_with_salt(id, cookie_salt)
-    user = find_by_id(id)
-    (user && user.salt == cookie_salt) ? user : nil
+    author = find_by_id(id)
+    (author && author.salt == cookie_salt) ? author : nil
   end
 
   private
