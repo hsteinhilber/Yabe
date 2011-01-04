@@ -22,6 +22,10 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  def deny_access
+    redirect_to login_path, :notice => "Please log in to access this page."
+  end
+
   private
     
     def user_from_remember_token
