@@ -3,8 +3,7 @@
   <nav class="round">
     <ul>
       <li><%= link_to "Home", root_path %></li>
-      <li><%= link_to "Contact", contact_path %></li>
-      <li><%= link_to "About", about_path %></li>
+      <li><%= link_to "Authors", authors_path %></li>
       <% if logged_in? %>
         <li><%= link_to "Profile", current_author %></li>
         <li><%= link_to "Logout", logout_path, :method => :delete %></li>
