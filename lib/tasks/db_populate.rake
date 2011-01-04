@@ -8,10 +8,11 @@ namespace :db do
                    :email => "first.author@example.com",
                    :password => "foobar",
                    :password_confirmation => "foobar")
-    Author.create!(:name => "Harry Steinhilber, Jr.",
-                   :email => "harry.steinhilber@gmail.com",
-                   :password => "secret",
-                   :password_confirmation => "secret")
+    owner = Author.create!(:name => "Harry Steinhilber, Jr.",
+                           :email => "harry.steinhilber@gmail.com",
+                           :password => "secret",
+                           :password_confirmation => "secret")
+    owner.toggle!(:owner)
     98.times do |n|
       name = Faker::Name.name
       email = "author-#{n+1}@example.org"

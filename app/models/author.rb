@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20101222012841
+# Schema version: 20110104233042
 #
 # Table name: authors
 #
@@ -11,6 +11,7 @@
 #  encrypted_password :string(64)
 #  salt               :string(64)
 #  profile            :text
+#  owner              :boolean
 #
 
 require 'digest'

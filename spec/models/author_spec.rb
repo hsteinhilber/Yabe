@@ -127,4 +127,23 @@ describe Author do
       end
     end
   end
+
+  describe "owner attribute" do
+    before(:each) do
+      @author = Author.create!(@attr)
+    end
+
+    it "should respond to owner" do
+      @author.should respond_to(:owner)
+    end
+
+    it "should no be an owner by default" do
+      @author.should_not be_owner
+    end
+
+    it "should be able to be upraded to an owner" do
+      @author.toggle!(:owner)
+      @author.should be_owner
+    end
+  end
 end
