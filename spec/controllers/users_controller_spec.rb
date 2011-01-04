@@ -201,5 +201,22 @@ describe UsersController do
         response.should redirect_to(login_path)
       end
     end
+
+    describe "for logged-in users" do
+      before(:each) do
+        wrong_user = Factory(:user, :email => "wrong.user@example.com")
+        test_login(wrong_user)
+      end
+
+      it "should redirect to root if wrong user attempts to 'edit'" do
+        get :edit, :id => @user
+        response.should redirect_to(root_path)
+      end
+
+      it "should redirect to root if wrong user attempts to 'update'" do
+        put :update, :id => @user, :user => {}
+        response.should redirect_to(root_path)
+      end
+    end
   end
 end
