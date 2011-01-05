@@ -1,6 +1,7 @@
 class AuthorsController < ApplicationController
-  before_filter :authenticate, :only => [:edit, :update]
+  before_filter :authenticate, :only => [:edit, :update, :destroy]
   before_filter :correct_author, :only => [:edit, :update]
+  before_filter :owner_only, :only => :destroy
 
   def new
     @author = Author.new
@@ -48,6 +49,12 @@ class AuthorsController < ApplicationController
     @authors = Author.paginate(:page => params[:page], :per_page => 10)
   end
 
+  def destroy
+    Author.find(params[:id]).destroy
+    flash[:success] = "Author has been deleted."
+    redirect_to authors_path
+  end
+
   private
     def authenticate
       deny_access unless logged_in?
@@ -56,5 +63,9 @@ class AuthorsController < ApplicationController
     def correct_author
       @author = Author.find(params[:id])
       redirect_to root_path unless current_author?(@author)
+    end
+
+    def owner_only
+      redirect_to(root_path) unless current_author.owner?
     end
 end

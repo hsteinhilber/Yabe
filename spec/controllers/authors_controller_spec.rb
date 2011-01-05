@@ -259,4 +259,55 @@ describe AuthorsController do
                                          :content => "Next")
     end
   end
+
+  describe "DELETE 'destroy'" do
+    before (:each) do
+      @author = Factory(:author)
+    end
+
+    describe "as a non-logged-in user" do
+      it "should deny access" do
+        delete :destroy, :id => @author
+        response.should redirect_to(login_path)
+      end
+
+      it "should not destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should_not change(Author, :count)
+      end
+   end
+
+    describe "as a non-owner user" do
+      it "should protect the page" do
+        test_login(@author)
+        delete :destroy, :id => @author
+        response.should redirect_to(root_path)
+      end
+
+      it "should not destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should_not change(Author, :count)
+      end
+    end
+
+    describe "as an owner user" do
+      before(:each) do
+        owner = Factory(:author, :email => "author@example.com", :owner => true)
+        test_login(owner)
+      end
+
+      it "should destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should change(Author, :count).by(-1)
+      end
+
+      it "should redirect to the authors page" do
+        delete :destroy, :id => @author
+        response.should redirect_to(authors_path)
+      end
+    end
+  end
 end

@@ -1,4 +1,9 @@
 <li>
   <%= gravatar_for author, :size => 50 %>
   <%= link_to author.name, author %>
+  <% if current_author && current_author.owner? %>
+   | <%= link_to "delete", author, :method => :delete,
+                                   :confirm => "Are you sure you wish to delete this author?",
+                                   :title => "Delete #{author.name}" %>
+  <% end %>
 </li>
