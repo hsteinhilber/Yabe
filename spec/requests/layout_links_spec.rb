@@ -17,14 +17,6 @@ describe "LayoutLinks" do
     response.should have_selector('title', :content => "About")
   end
 
-  describe "when not logged in" do
-    it "should have a log in link" do
-      visit root_path
-      response.should have_selector("a", :href => login_path,
-                                         :content => "Login")
-    end
-  end
-
   describe "when logged in" do
     before(:each) do
       @author = Factory(:author)

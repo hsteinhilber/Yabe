@@ -5,7 +5,6 @@ Yabe::Application.routes.draw do
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'
-  match '/signup', :to => 'authors#new'
   match '/login', :to => 'sessions#new'
   match '/logout', :to => 'sessions#destroy'
 

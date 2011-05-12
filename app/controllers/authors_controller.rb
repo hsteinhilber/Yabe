@@ -1,21 +1,21 @@
 class AuthorsController < ApplicationController
-  before_filter :authenticate, :only => [:edit, :update, :destroy]
+  before_filter :authenticate, :except => [:show, :index]
   before_filter :correct_author, :only => [:edit, :update]
-  before_filter :owner_only, :only => :destroy
+  before_filter :owner_only, :only => [:new, :create, :destroy]
 
   def new
     @author = Author.new
-    @title = "Sign up"
+    @title = "New Author"
   end
 
   def create
     @author = Author.new(params[:author])
     if @author.save
       login @author
-      flash[:success] = "Thank you for signing up!"
+      flash[:success] = "Welcome our new author!"
       redirect_to @author
     else
-      @title = "Sign up"
+      @title = "New Author"
       @author.password = ""
       @author.password_confirmation = ""
       render :new

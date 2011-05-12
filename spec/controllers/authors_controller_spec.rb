@@ -4,14 +4,52 @@ describe AuthorsController do
   render_views
 
   describe "GET 'new'" do
-    it "should be successful" do
-      get 'new'
-      response.should be_success
+    before (:each) do
+      @author = Factory(:author)
     end
 
-    it "should have the right title" do
-      get 'new'
-      response.should have_selector("title", :content => "Sign up")
+    describe "as a non-logged-in user" do
+      it "should deny access" do
+        delete :destroy, :id => @author
+        response.should redirect_to(login_path)
+      end
+
+      it "should not destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should_not change(Author, :count)
+      end
+   end
+
+    describe "as a non-owner user" do
+      it "should protect the page" do
+        test_login(@author)
+        delete :destroy, :id => @author
+        response.should redirect_to(root_path)
+      end
+
+      it "should not destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should_not change(Author, :count)
+      end
+    end
+
+    describe "as an owner user" do
+      before(:each) do
+        owner = Factory(:author, :email => "author@example.com", :owner => true)
+        test_login(owner)
+      end
+
+      it "should be successful" do
+        get 'new'
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get 'new'
+        response.should have_selector("title", :content => "New Author")
+      end
     end
   end
 
@@ -47,63 +85,101 @@ describe AuthorsController do
   end
 
   describe "POST 'create'" do
-    describe "failure" do
-      before(:each) do
-        @attr = { :name => "", :email => "", :password => "bad", :password_confirmation => "invalid" }
+    before (:each) do
+      @author = Factory(:author)
+    end
+
+    describe "as a non-logged-in user" do
+      it "should deny access" do
+        delete :destroy, :id => @author
+        response.should redirect_to(login_path)
       end
 
-      it "should not create a author" do
+      it "should not destroy the user" do
         lambda do
-          post :create, :author => @attr
+          delete :destroy, :id => @author
         end.should_not change(Author, :count)
       end
+   end
 
-      it "should have the right title" do 
-        post :create, :author => @attr
-        response.should have_selector("title", :content => "Sign up")
+    describe "as a non-owner user" do
+      it "should protect the page" do
+        test_login(@author)
+        delete :destroy, :id => @author
+        response.should redirect_to(root_path)
       end
 
-      it "should render the 'new' page" do
-        post :create, :author => @attr
-        response.should render_template('new')
-      end
-
-      it "should clear the password" do
-        post :create, :author => @attr
-        assigns(:author).password.should be_empty
-      end
-
-      it "should clear the confirmation" do
-        post :create, :author => @attr
-        assigns(:author).password_confirmation.should be_empty
+      it "should not destroy the user" do
+        lambda do
+          delete :destroy, :id => @author
+        end.should_not change(Author, :count)
       end
     end
-    
-    describe "success" do
+
+    describe "as an owner user" do
       before(:each) do
-        @attr = { :name => "New Author", :email => "new.author@example.com",
-          :password => "secret", :password_confirmation => "secret" }
+        owner = Factory(:author, :email => "author@example.com", :owner => true)
+        test_login(owner)
       end
 
-      it "should create a author" do
-        lambda do
+      describe "failure" do
+        before(:each) do
+          @attr = { :name => "", :email => "", :password => "bad", :password_confirmation => "invalid" }
+        end
+
+        it "should not create a author" do
+          lambda do
+            post :create, :author => @attr
+          end.should_not change(Author, :count)
+        end
+
+        it "should have the right title" do 
           post :create, :author => @attr
-        end.should change(Author, :count).by(1)
-      end
+          response.should have_selector("title", :content => "New Author")
+        end
 
-      it "should redirect to the author show page" do
-        post :create, :author => @attr
-        response.should redirect_to(author_path(assigns(:author)))
-      end
+        it "should render the 'new' page" do
+          post :create, :author => @attr
+          response.should render_template('new')
+        end
 
-      it "should have a welcome message" do
-        post :create, :author => @attr
-        flash[:success].should =~ /thank you/i
-      end
+        it "should clear the password" do
+          post :create, :author => @attr
+          assigns(:author).password.should be_empty
+        end
 
-      it "should log the author in" do
-        post :create, :author => @attr
-        controller.should be_logged_in
+        it "should clear the confirmation" do
+          post :create, :author => @attr
+          assigns(:author).password_confirmation.should be_empty
+        end
+      end
+      
+      describe "success" do
+        before(:each) do
+          @attr = { :name => "New Author", :email => "new.author@example.com",
+            :password => "secret", :password_confirmation => "secret" }
+        end
+
+        it "should create a author" do
+          lambda do
+            post :create, :author => @attr
+          end.should change(Author, :count).by(1)
+        end
+
+        it "should redirect to the author show page" do
+          post :create, :author => @attr
+          response.should redirect_to(author_path(assigns(:author)))
+        end
+
+        it "should have a welcome message" do
+          post :create, :author => @attr
+          flash[:success].should =~ /welcome/i
+        end
+
+        it "should log the author in" do
+          post :create, :author => @attr
+          controller.should be_logged_in
+        end
       end
     end
   end
