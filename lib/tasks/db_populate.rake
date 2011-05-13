@@ -1,4 +1,4 @@
-require 'faker' if Rails::env != :production
+require 'faker' unless Rails::env == "production"
 
 namespace :db do
   desc "Fill database with sample data"
@@ -9,7 +9,7 @@ namespace :db do
                            :password => "secret",
                            :password_confirmation => "secret")
     owner.toggle!(:owner)
-    next if Rails::env == :production
+    next if Rails::env == "production"
 
     Author.create!(:name => "Primary Author",
                    :email => "first.author@example.com",
