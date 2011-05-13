@@ -14,6 +14,11 @@ describe PostsController do
       get :index
       assigns(:posts).should eq([mock_post])
     end
+
+    it "displays posts in reverse order of publish date" do
+      Post.should_receive(:all).with(:order => "created_at DESC")
+      get :index
+    end
   end
 
   describe "GET index as atom" do
