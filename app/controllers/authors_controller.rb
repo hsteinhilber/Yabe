@@ -11,9 +11,8 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new(params[:author])
     if @author.save
-      login @author
       flash[:success] = "Welcome our new author!"
-      redirect_to @author
+      redirect_to authors_path
     else
       @title = "New Author"
       @author.password = ""

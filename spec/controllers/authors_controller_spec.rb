@@ -166,19 +166,14 @@ describe AuthorsController do
           end.should change(Author, :count).by(1)
         end
 
-        it "should redirect to the author show page" do
+        it "should redirect to the authors index page" do
           post :create, :author => @attr
-          response.should redirect_to(author_path(assigns(:author)))
+          response.should redirect_to(authors_path)
         end
 
         it "should have a welcome message" do
           post :create, :author => @attr
           flash[:success].should =~ /welcome/i
-        end
-
-        it "should log the author in" do
-          post :create, :author => @attr
-          controller.should be_logged_in
         end
       end
     end
