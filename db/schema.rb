@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110104233042) do
+ActiveRecord::Schema.define(:version => 20110514110539) do
 
   create_table "authors", :force => true do |t|
     t.string   "name",               :limit => 75
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20110104233042) do
   add_index "authors", ["email"], :name => "index_users_on_email", :unique => true
 
   create_table "posts", :force => true do |t|
-    t.string   "title"
-    t.string   "body"
+    t.string   "title",      :limit => 35
+    t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
