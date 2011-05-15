@@ -46,5 +46,12 @@ describe Post do
     it "should order comments from the oldest to the newest" do
       @post.comments.should == [@comment2, @comment1]
     end
+
+    it "should destroy related comments" do
+      @post.destroy
+      [@comment1, @comment2].each do |comment|
+        Comment.find_by_id(comment.id).should be_nil
+      end
+    end
   end
 end

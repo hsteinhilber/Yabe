@@ -12,7 +12,7 @@
 
 class Post < ActiveRecord::Base
   attr_accessible :title, :body
-  has_many :comments
+  has_many :comments, :dependent => :destroy
 
   validates :title, :presence => true,
                     :length => { :maximum => 35 }
