@@ -30,4 +30,15 @@ describe Post do
     long_body_post = Post.new(@attr.merge(:body => long_body))
     long_body_post.should be_valid
   end
+
+  describe "association with comments" do
+
+    before(:each) do
+      @post = Post.create(@attr)
+    end
+
+    it "should have a comments attribute" do
+      @post.should respond_to(:comments)
+    end
+  end
 end
