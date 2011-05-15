@@ -35,10 +35,16 @@ describe Post do
 
     before(:each) do
       @post = Post.create(@attr)
+      @comment1 = Factory(:comment, :post => @post, :created_at => 1.hour.ago)
+      @comment2 = Factory(:comment, :post => @post, :created_at => 1.day.ago)
     end
 
     it "should have a comments attribute" do
       @post.should respond_to(:comments)
+    end
+
+    it "should order comments from the oldest to the newest" do
+      @post.comments.should == [@comment2, @comment1]
     end
   end
 end
