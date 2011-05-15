@@ -1,11 +1,11 @@
 # == Schema Information
-# Schema version: 20101201195101
+# Schema version: 20110515143014
 #
 # Table name: posts
 #
 #  id         :integer         not null, primary key
-#  title      :string(255)
-#  body       :string(255)
+#  title      :string(35)
+#  body       :text
 #  created_at :datetime
 #  updated_at :datetime
 #

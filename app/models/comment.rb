@@ -1,3 +1,18 @@
+# == Schema Information
+# Schema version: 20110515143014
+#
+# Table name: comments
+#
+#  id         :integer         not null, primary key
+#  post_id    :integer
+#  name       :string(75)
+#  url        :string(150)
+#  email      :string(75)
+#  body       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Comment < ActiveRecord::Base
   attr_accessible :name, :url, :email, :body
   belongs_to :post
