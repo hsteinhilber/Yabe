@@ -1,5 +1,7 @@
-<% div_for post do %>
-  <h2><%= link_to_unless_current h(post.title), post %></h2>
-  <%= simple_format h(post.body) %>
-<% end %>
+<article id="<%= post.id %>">
+  <header>
+    <h1><%= link_to_unless_current post.title, post %></h1>
+  </header>
+  <%= simple_format post.body %>
+</article>
 

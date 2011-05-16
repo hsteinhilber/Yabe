@@ -8,3 +8,9 @@
   <%= link_to 'See All Posts', posts_path %>
 </p>
 
+<section id="comments">
+  <header>
+    <h1>Comments</h1>
+  </header>
+  <%= render @post.comments %>
+</section>
