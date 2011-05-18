@@ -34,6 +34,36 @@ section {
   background: #fff;
 }
 
+/* Comments */
+section#comments h1 {
+  font-size: 1.8em;
+}
+
+section#comments img.gravatar {
+  float: left;
+  display: block;
+}
+
+section#comments article header {
+  border: 1px dashed #800;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #eee;
+  margin: 0px 0px 5px 55px;
+  padding: 2px 0px 2px 10px;
+}
+
+section#comments article header h1 {
+  display: inline;
+  font-size: 1.0em;
+}
+
+section#comments article div {
+  margin-left: 55px;
+  margin-bottom: 26px;
+}
+
 /* Links */
 a {
   color: #830;
@@ -50,7 +80,7 @@ a:visited {
 }
 
 /* Navigation */
-nav {
+nav 
   float: right;
   background-color: white;
   padding: 0 0.7em;
