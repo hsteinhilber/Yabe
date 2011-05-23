@@ -64,6 +64,10 @@ section#comments article div {
   margin-bottom: 26px;
 }
 
+section#comments footer {
+  text-align: left;
+}
+
 /* Links */
 a {
   color: #830;
