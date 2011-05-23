@@ -1,5 +1,7 @@
 Yabe::Application.routes.draw do
-  resources :posts
+  resources :posts do
+    resources :comments, :only => [:create, :destroy]
+  end
   resources :authors
   resources :sessions, :only => [:new, :create, :destroy]
 
