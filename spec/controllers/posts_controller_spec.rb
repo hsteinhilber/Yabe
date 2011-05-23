@@ -82,6 +82,17 @@ describe PostsController do
       get :show, :id => "37"
       response.should have_selector("div", :content => @c1.body)
     end
+
+    it "shows the full time when hovering over timestamp" do
+      get :show, :id => "37"
+      response.should have_selector('time', :title => @c1.created_at.to_s)
+    end
+
+    it "links the user's name to their url if provided" do
+      @c1.stub(:url) { "http://example.com/commenter" }
+      get :show, :id => "37"
+      response.should have_selector('a', :href => @c1.url, :content => @c1.name)
+    end
   end
 
   describe "GET new" do
