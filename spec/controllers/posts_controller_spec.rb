@@ -93,6 +93,11 @@ describe PostsController do
       get :show, :id => "37"
       response.should have_selector('a', :href => @c1.url, :content => @c1.name)
     end
+
+    it "contains an anchor tag for the comments" do
+      get :show, :id => "37"
+      response.should have_selector('a', :id => "comment_#{@c1.id}")
+    end
   end
 
   describe "GET new" do

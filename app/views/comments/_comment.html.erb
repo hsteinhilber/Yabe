@@ -1,5 +1,7 @@
 <article>
-  <%= gravatar_for(comment) %>
+  <a id="comment_<%= comment.id %>" href="#comment_<%= comment.id %>">
+    <%= gravatar_for(comment) %>
+  </a>
   <header>
   <time datetime="<%= comment.created_at %>" 
         title="<%= comment.created_at.localtime %>">
