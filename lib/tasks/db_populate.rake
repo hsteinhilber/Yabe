@@ -15,14 +15,46 @@ namespace :db do
                    :email => "first.author@example.com",
                    :password => "foobar",
                    :password_confirmation => "foobar")
-    98.times do |n|
+    12.times do |n|
       name = Faker::Name.name
-      email = "author-#{n+1}@example.org"
-      password = "pa55w0rd"
+      email = Faker::Internet.email(name)
+      password = '???#???#'.gsub(/\?/) { ('a'..'z').to_a.rand }.gsub(/#/) { rand(10).to_s } 
       Author.create!(:name => name,
                      :email => email,
                      :password => password,
                      :password_confirmation => password)
+    end
+
+    (15 + rand(16)).times do |n|
+      title = Faker::Lorem.sentence(4).slice(0,75)
+      body = Faker::Lorem.paragraphs(3)
+      post = Post.create!(:title => title,
+                          :body => body)      
+      post.created_at = Time.now - rand(60 * 60 * 24 * 90)
+      post.save!
+      add_comments post
+    end
+  end
+
+  def add_comments(post)
+    rand(16).times do |n|
+      commenter = Faker::Name.name
+      email = Faker::Internet.email(commenter)
+      case x = rand(10)
+      when x < 2
+        url = "http://#{Faker::Internet.domain_name}/#{Faker::Internet.user_name(name)}"
+      when x < 5
+        url = "http://#{Faker::Internet.user_name(name)}.#{Faker::Internet.domain_name}"                                                       
+      else
+        url = ""
+      end
+      body = Faker::Lorem.sentences(2)
+      comment = post.comments.create!(:name => commenter,
+                                           :email => email,
+                                           :url => url,
+                                           :body => body)
+      comment.created_at = post.created_at - rand(60 * 60 * 24 * 5)
+      comment.save!
     end
   end
 end
