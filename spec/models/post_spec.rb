@@ -15,7 +15,7 @@ describe Post do
   end
 
   it "should reject titles that are too long" do
-    long_title = "a" * 36
+    long_title = "a" * 76
     long_title_post = Post.new(@attr.merge(:title => long_title))
     long_title_post.should_not be_valid
   end

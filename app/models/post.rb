@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110515143014
+# Schema version: 20110524125759
 #
 # Table name: posts
 #
 #  id         :integer         not null, primary key
-#  title      :string(35)
+#  title      :string(75)
 #  body       :text
 #  created_at :datetime
 #  updated_at :datetime
@@ -15,6 +15,6 @@ class Post < ActiveRecord::Base
   has_many :comments, :dependent => :destroy
 
   validates :title, :presence => true,
-                    :length => { :maximum => 35 }
+                    :length => { :maximum => 75 }
   validates :body, :presence => true
 end
