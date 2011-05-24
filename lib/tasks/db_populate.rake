@@ -40,14 +40,14 @@ namespace :db do
     rand(16).times do |n|
       commenter = Faker::Name.name
       email = Faker::Internet.email(commenter)
-      case x = rand(10)
-      when x < 2
-        url = "http://#{Faker::Internet.domain_name}/#{Faker::Internet.user_name(name)}"
-      when x < 5
-        url = "http://#{Faker::Internet.user_name(name)}.#{Faker::Internet.domain_name}"                                                       
-      else
-        url = ""
-      end
+      url = case rand(10)
+            when 0...2
+              "http://#{Faker::Internet.domain_name}/#{Faker::Internet.user_name(commenter)}"
+            when 2...5
+              "http://#{Faker::Internet.user_name(commenter)}.#{Faker::Internet.domain_name}"                                                       
+            else
+              ""
+            end
       body = Faker::Lorem.sentences(2)
       comment = post.comments.create!(:name => commenter,
                                            :email => email,
