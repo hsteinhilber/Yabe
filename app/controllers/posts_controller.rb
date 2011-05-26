@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_filter :authenticate, :only => [:new]
   # GET /posts
   # GET /posts.xml
   def index
@@ -28,6 +29,7 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.xml
   def new
+    @title = "New Post"
     @post = Post.new
 
     respond_to do |format|
@@ -89,4 +91,9 @@ class PostsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private 
+    def authenticate
+      redirect_to login_path unless logged_in?
+    end
 end

@@ -104,10 +104,29 @@ describe PostsController do
   end
 
   describe "GET new" do
-    it "assigns a new post as @post" do
-      Post.stub(:new) { mock_post }
-      get :new
-      assigns(:post).should be(mock_post)
+
+    context 'as an anonymous user' do
+      it 'should force the user to log in' do
+        get :new
+        response.should redirect_to(login_path)
+      end
+    end
+
+    context 'as an author' do
+      before(:each) do
+        @author = Factory(:author)
+        test_login(@author)
+      end
+
+      it 'should be successful' do
+        get :new
+        response.should be_success
+      end
+
+      it 'should have the right title' do
+        get :new
+        response.should have_selector('title', :content => "New Post")
+      end
     end
   end
 
