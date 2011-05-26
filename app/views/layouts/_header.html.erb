@@ -1,13 +1,11 @@
 <header>
   <%= link_to logo, root_path %>
-  <nav class="round">
-    <ul>
-      <li><%= link_to "Home", root_path %></li>
-      <li><%= link_to "Authors", authors_path %></li>
-      <% if logged_in? %>
-        <li><%= link_to "Profile", current_author %></li>
-        <li><%= link_to "Logout", logout_path, :method => :delete %></li>
-      <% end %>
-    </ul>
-  </nav>
+  <% if logged_in? %>
+    <nav class="round">
+      <ul>
+          <li><%= link_to "Profile", current_author %></li>
+          <li><%= link_to "Logout", logout_path, :method => :delete %></li>
+      </ul>
+    </nav>
+  <% end %>
 </header>
