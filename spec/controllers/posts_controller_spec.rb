@@ -6,31 +6,39 @@ describe PostsController do
   def mock_post(stubs={})
     (@mock_post ||= mock_model(Post).as_null_object).tap do |post|
       post.stub(stubs) unless stubs.empty?
+      post.stub(:created_at)
     end
   end
 
   describe "GET index" do
-    it "assigns all posts as @posts" do
-      Post.stub(:all) { [mock_post] }
+
+    before(:each) do
+      @posts = []
+      12.times do |n|
+        @posts << Factory(:post, :title => "Post ##{n}")
+      end
+      @posts = @posts.sort_by { |p| p.created_at }.reverse
+    end
+    
+    it "assigns 10 posts as @posts" do
       get :index
-      assigns(:posts).should eq([mock_post])
+      assigns(:posts).should == @posts.take(10)
     end
 
-    it "displays posts in reverse order of publish date" do
-      Post.should_receive(:all)
-          .with(:order => "created_at DESC")
-          .and_return([mock_post])
+    it "should paginate the posts" do
       get :index
+      response.should have_selector("div.pagination")
+      response.should have_selector("a", :href => "/posts?page=2")
+    end
+
+    context "as atom" do
+      it "should return a feed" do
+        get :index, :format => :atom
+        response.should be_success
+      end
     end
   end
 
-  describe "GET index as atom" do
-    it "should return a feed" do
-      Post.stub(:all) { [mock_post] }
-      get :index, :format => :atom
-      response.should be_success
-    end
-  end
 
   describe "GET show" do    
     before(:each) do

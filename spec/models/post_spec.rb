@@ -25,6 +25,14 @@ describe Post do
     no_body_post.should_not be_valid
   end
 
+  it "should sort in descending order by created_at by default" do
+    @posts = []
+    10.times do |n|
+      @posts << Factory(:post, :title => "Post ##{n}", :created_at => Time.now - 60 + n)
+    end
+    Post.all.should == @posts.sort_by { |p| p.created_at }.reverse
+  end
+
   it "should allow really long strings" do
     long_body = "a" * 5000
     long_body_post = Post.new(@attr.merge(:body => long_body))
