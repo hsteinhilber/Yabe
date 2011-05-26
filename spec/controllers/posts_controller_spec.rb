@@ -39,71 +39,66 @@ describe PostsController do
     end
   end
 
-
   describe "GET show" do    
     before(:each) do
-      mock_post
-      Post.stub(:find).with("37") { mock_post }
-      @c1 = mock_model(Comment).as_null_object.tap do |comment|
-        comment.stub(:name) { "Example Commenter" }
-        comment.stub(:email) { "commenter@example.com" }
-        comment.stub(:body) { "Lorem Ipsum Comment!" }
-        comment.stub(:created_at) { Time.new(2011,5,15,19,0,0) }
-      end
-      @c2 = mock_model(Comment).as_null_object.tap do |comment|
-        comment.stub(:name) { "Another Commenter" }
-        comment.stub(:email) { "second.commenter@example.com" }
-        comment.stub(:body) { "Arbitrary Text!" }
-        comment.stub(:created_at) { Time.new(2011,5,15,20,0,0) }
-      end
-      mock_post.stub(:comments) { [@c1,@c2] }
+      @post = Factory(:post)
+      @c1 = Factory(:comment, :post => @post,
+                    :name => "Example Commenter",
+                    :email => "commenter@example.com",
+                    :body => "Lorem Ipsum Comment!",
+                    :created_at => Time.new(2011,5,15,19,0,0))
+      @c2 = Factory(:comment, :post => @post, 
+                    :name => "Another Commenter", 
+                    :email => "second.commenter@example.com", 
+                    :body => "Arbitrary Text!", 
+                    :created_at => Time.new(2011,5,15,20,0,0)) 
     end
 
     it "assigns the requested post as @post" do
-      get :show, :id => "37"
-      assigns(:post).should be(mock_post)
+      get :show, :id => @post.id
+      assigns(:post).should == @post
     end
 
     it "displays a list of comments" do
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('section#comments>header>h1', :content => "Comments")
     end
 
     it "shows the time of each comment" do
       Time.stub(:now) { Time.new(2011,5,15,20,30,0) }
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('time', :content => "about 2 hours ago", :datetime => @c1.created_at.to_s)
       response.should have_selector('time', :content => "30 minutes ago", :datetime => @c2.created_at.to_s)
     end
 
     it "shows the gravatar for the commenter" do
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('img', :class => "gravatar")
     end
 
     it "shows the commenter's name" do
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('h1', :content => @c1.name)
     end
 
     it "shows the body of the comment" do
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector("div", :content => @c1.body)
     end
 
     it "shows the full time when hovering over timestamp" do
-      get :show, :id => "37"
-      response.should have_selector('time', :title => @c1.created_at.to_s)
+      get :show, :id => @post.id 
+      response.should have_selector('time', :title => @c1.created_at.localtime.to_s)
     end
 
     it "links the user's name to their url if provided" do
       @c1.stub(:url) { "http://example.com/commenter" }
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('a', :href => @c1.url, :content => @c1.name)
     end
 
     it "contains an anchor tag for the comments" do
-      get :show, :id => "37"
+      get :show, :id => @post.id
       response.should have_selector('a', :id => "comment_#{@c1.id}")
     end
   end
