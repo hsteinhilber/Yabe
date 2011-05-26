@@ -62,4 +62,21 @@ describe Post do
       end
     end
   end
+
+  describe 'association with author' do
+    
+    before(:each) do 
+      @author = Factory(:author)
+      @post = @author.posts.create(@attr)
+    end
+
+    it "should have an author attribute" do
+      @post.should respond_to(:author)
+    end
+
+    it "should be associated with the corrct author" do
+      @post.author_id.should == @author.id
+      @post.author.should == @author
+    end
+  end
 end

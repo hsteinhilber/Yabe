@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110524125759
+# Schema version: 20110526131138
 #
 # Table name: posts
 #
@@ -8,10 +8,12 @@
 #  body       :text
 #  created_at :datetime
 #  updated_at :datetime
+#  author_id  :integer
 #
 
 class Post < ActiveRecord::Base
   attr_accessible :title, :body
+  belongs_to :author
   has_many :comments, :dependent => :destroy
 
   validates :title, :presence => true,

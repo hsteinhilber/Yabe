@@ -146,4 +146,30 @@ describe Author do
       @author.should be_owner
     end
   end
+
+  describe 'posts association' do
+    
+    before(:each) do
+      @author = Author.create!(@attr)
+      @post1 = Factory(:post, :author => @author, :title => "first post", :created_at => 2.days.ago)
+      @post2 = Factory(:post, :author => @author, :title => "second post", :created_at => 3.hours.ago)
+    end
+
+    it "should have a posts attribute" do
+      @author.should respond_to(:posts)
+    end
+
+    it "contains only posts for that author" do
+      second_author = Factory(:author)
+      another_post = Factory(:post, :author => second_author)
+      @author.posts.should == [@post2, @post1]
+    end
+
+    it "should destroy related posts" do
+      @author.destroy
+      [@post1, @post2].each do |post|
+        Post.find_by_id(post.id).should be_nil
+      end
+    end
+  end
 end
