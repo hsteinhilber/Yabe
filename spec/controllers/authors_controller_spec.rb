@@ -79,28 +79,16 @@ describe AuthorsController do
 
     describe "as a non-logged-in user" do
       it "should deny access" do
-        delete :destroy, :id => @author
+        get :new
         response.should redirect_to(login_path)
       end
-
-      it "should not destroy the user" do
-        lambda do
-          delete :destroy, :id => @author
-        end.should_not change(Author, :count)
-      end
-   end
+    end
 
     describe "as a non-owner user" do
       it "should protect the page" do
         test_login(@author)
-        delete :destroy, :id => @author
+        get :new
         response.should redirect_to(root_path)
-      end
-
-      it "should not destroy the user" do
-        lambda do
-          delete :destroy, :id => @author
-        end.should_not change(Author, :count)
       end
     end
 
