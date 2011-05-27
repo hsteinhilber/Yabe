@@ -131,10 +131,58 @@ describe PostsController do
   end
 
   describe "GET edit" do
-    it "assigns the requested post as @post" do
-      Post.stub(:find).with("37") { mock_post }
-      get :edit, :id => "37"
-      assigns(:post).should be(mock_post)
+    before(:each) do
+      @author = Factory(:author)
+      @post = Factory(:post, :author => @author)
+    end
+
+    context 'as an anonymous user' do
+      it 'should force the user to log in' do
+        get :edit, :id => @post.id
+        response.should redirect_to(login_path)
+      end
+    end
+
+    context 'as a different author' do
+      before(:each) do
+        current_author = Factory(:author, :name => "Another Author", :email => Factory.next(:email))
+        test_login(current_author)
+      end
+
+      it 'redirects to show page' do
+        get :edit, :id => @post.id
+        response.should redirect_to(post_path(@post))
+      end
+
+      it 'give message stating author cannot edit the post' do
+        get :edit, :id => @post.id
+        flash[:error].should =~ /cannot edit/i
+      end
+    end
+
+    context "as the post's author" do
+      before(:each) do
+        test_login(@author)
+      end
+
+      it 'should be successful' do
+        get :edit, :id => @post.id
+        response.should be_success
+      end
+    end
+
+    context 'as an owner' do
+      before (:each) do
+        owner = Factory(:author, :name => "Owner Author", 
+                                 :email => Factory.next(:email),
+                                 :owner => true)
+        test_login(owner)
+      end
+
+      it 'should be successful' do
+        get :edit, :id => @post.id
+        response.should be_success
+      end
     end
   end
 

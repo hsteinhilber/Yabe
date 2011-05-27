@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
-  before_filter :authenticate, :only => [:new]
+  before_filter :authenticate, :only => [:new, :edit]
+  before_filter :correct_author, :only => [:edit]
+
   # GET /posts
   # GET /posts.xml
   def index
@@ -95,5 +97,13 @@ class PostsController < ApplicationController
   private 
     def authenticate
       redirect_to login_path unless logged_in?
+    end
+
+    def correct_author
+      @post = Post.find(params[:id])
+      unless current_author?(@post.author) || current_author.owner?
+        flash[:error] = "You cannot edit posts that do not belong to you."
+        redirect_to @post
+      end
     end
 end
