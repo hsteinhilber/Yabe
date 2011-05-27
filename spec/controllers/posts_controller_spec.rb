@@ -19,7 +19,7 @@ describe PostsController do
       end
       @posts = @posts.sort_by { |p| p.created_at }.reverse
     end
-    
+
     it "assigns 10 posts as @posts" do
       get :index
       assigns(:posts).should == @posts.take(10)
@@ -57,6 +57,11 @@ describe PostsController do
     it "assigns the requested post as @post" do
       get :show, :id => @post.id
       assigns(:post).should == @post
+    end
+
+    it "has the right title" do
+      get :show, :id => @post.id
+      response.should have_selector('title', :content => @post.title)
     end
 
     it "displays a list of comments" do
@@ -169,6 +174,11 @@ describe PostsController do
         get :edit, :id => @post.id
         response.should be_success
       end
+
+      it 'have the correct title' do
+        get :edit, :id => @post.id
+        response.should have_selector('title', :content => @post.title)
+      end
     end
 
     context 'as an owner' do
@@ -183,39 +193,75 @@ describe PostsController do
         get :edit, :id => @post.id
         response.should be_success
       end
+
+      it 'have the correct title' do
+        get :edit, :id => @post.id
+        response.should have_selector('title', :content => @post.title)
+      end
     end
   end
 
   describe "POST create" do
+    before(:each) do
+      @author = Factory(:author)
+      @attr = { :title => "New Post", :body => "Lorem Ipsum Dolor!" }
+    end
 
-    describe "with valid params" do
-      it "assigns a newly created post as @post" do
-        Post.stub(:new).with({'these' => 'params'}) { mock_post(:save => true) }
-        post :create, :post => {'these' => 'params'}
-        assigns(:post).should be(mock_post)
+    context 'as an anonymous user' do
+      it 'should force the user to log in' do
+        post :create, :post => @attr
+        response.should redirect_to(login_path)
       end
 
-      it "redirects to the created post" do
-        Post.stub(:new) { mock_post(:save => true) }
-        post :create, :post => {}
-        response.should redirect_to(post_url(mock_post))
+      it 'should not create a post' do
+        lambda do
+          post :create, :post => @attr
+        end.should_not change(Post,:count)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved post as @post" do
-        Post.stub(:new).with({'these' => 'params'}) { mock_post(:save => false) }
-        post :create, :post => {'these' => 'params'}
-        assigns(:post).should be(mock_post)
+    context 'as an author' do
+      before(:each) do
+        test_login(@author)
       end
 
-      it "re-renders the 'new' template" do
-        Post.stub(:new) { mock_post(:save => false) }
-        post :create, :post => {}
-        response.should render_template("new")
+      context 'with valid attributes' do
+        it 'creates a new post' do
+          lambda do
+            post :create, :post => @attr
+          end.should change(Post, :count).by(1)
+        end
+
+        it 'stores the new post in a variable called @post' do
+          post :create, :post => @attr
+          assigns(:post)
+        end
+
+        it 'assigns the correct author to the post' do
+          post :create, :post => @attr
+          assigns(:post).author_id.should == @author.id
+          assigns(:post).author.should == @author
+        end
+      end
+
+      context 'with invalid attributes' do
+        it 'does not create a new post' do
+          lambda do
+            post :create, :post => @attr.merge(:title => "")
+          end.should_not change(Post,:count)
+        end
+
+        it "renders the 'new' page" do
+          post :create, :post => @attr.merge(:title => "")
+          response.should render_template('new')
+        end
+
+        it 'has the correct title' do
+          post :create, :post => @attr.merge(:title => "")
+          response.should have_selector('title', :content => "New Post")
+        end
       end
     end
-
   end
 
   describe "PUT update" do

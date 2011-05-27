@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :authenticate, :only => [:new, :edit]
+  before_filter :authenticate, :only => [:new, :edit, :create]
   before_filter :correct_author, :only => [:edit]
 
   # GET /posts
@@ -20,6 +20,7 @@ class PostsController < ApplicationController
   # GET /posts/1.xml
   def show
     @post = Post.find(params[:id])
+    @title = @post.title
 
     respond_to do |format|
       format.html # show.html.erb
@@ -31,8 +32,8 @@ class PostsController < ApplicationController
   # GET /posts/new
   # GET /posts/new.xml
   def new
-    @title = "New Post"
     @post = Post.new
+    @title = "New Post"
 
     respond_to do |format|
       format.html # new.html.erb
@@ -44,12 +45,13 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
+    @title = @post.title
   end
 
   # POST /posts
   # POST /posts.xml
   def create
-    @post = Post.new(params[:post])
+    @post = current_author.posts.build(params[:post])
 
     respond_to do |format|
       if @post.save
@@ -57,6 +59,7 @@ class PostsController < ApplicationController
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => @post, :status => :created, :location => @post }
       else
+        @title = "New Post"
         format.html { render :action => "new" }
         format.xml  { render :xml => @post.errors, :status => :unprocessable_entity }
         format.json { render :json => @post.errors, :status => :unprocessable_entity }
