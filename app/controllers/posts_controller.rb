@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  include PostsHelper
   before_filter :authenticate, :only => [:new, :edit, :create, :update, :destroy]
   before_filter :correct_author, :only => [:edit, :update, :destroy]
 
@@ -105,7 +106,7 @@ class PostsController < ApplicationController
 
     def correct_author
       @post = Post.find(params[:id])
-      unless current_author?(@post.author) || current_author.owner?
+      unless can_edit_post?(@post)
         flash[:error] = "You cannot edit posts that do not belong to you."
         redirect_to @post
       end

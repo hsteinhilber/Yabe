@@ -1,10 +1,6 @@
 <%= render @post %>
 
-<p>
-  <%= link_to 'Edit', edit_post_path(@post) %> |
-  <%= link_to 'Delete', @post, :method => :delete, :confirm => "Are you sure?" %> |
-  <%= link_to 'See All Posts', posts_path %>
-</p>
+<%= render_editor_links(@post) %>
 
 <section id="comments">
   <header>

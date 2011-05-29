@@ -3,13 +3,6 @@ require 'spec_helper'
 describe PostsController do
   render_views
 
-  def mock_post(stubs={})
-    (@mock_post ||= mock_model(Post).as_null_object).tap do |post|
-      post.stub(stubs) unless stubs.empty?
-      post.stub(:created_at)
-    end
-  end
-
   describe "GET index" do
 
     before(:each) do
@@ -31,6 +24,17 @@ describe PostsController do
       response.should have_selector("a", :href => "/posts?page=2")
     end
 
+    it "should display a link to create posts to authors" do
+      test_login(Factory(:author))
+      get :index
+      response.should have_selector('a', :href => new_post_path)
+    end
+
+    it 'should not display new post link if not logged in' do
+      get :index
+      response.should_not have_selector('a', :href => new_post_path)
+    end
+
     context "as atom" do
       it "should return a feed" do
         get :index, :format => :atom
@@ -41,7 +45,8 @@ describe PostsController do
 
   describe "GET show" do    
     before(:each) do
-      @post = Factory(:post)
+      @author = Factory(:author)
+      @post = Factory(:post, :author => @author)
       @c1 = Factory(:comment, :post => @post,
                     :name => "Example Commenter",
                     :email => "commenter@example.com",
@@ -105,6 +110,68 @@ describe PostsController do
     it "contains an anchor tag for the comments" do
       get :show, :id => @post.id
       response.should have_selector('a', :id => "comment_#{@c1.id}")
+    end
+
+    context 'as an anonymous user' do
+      it 'should not show the post edit link' do
+        get :show, :id => @post.id
+        response.should_not have_selector('a', :href => edit_post_path(@post))
+      end
+
+      it 'should not show the post destroy link' do
+        get :show, :id => @post.id
+        response.should_not have_selector('a', :href => post_path(@post), :content => 'Delete')
+      end
+    end
+
+    context 'as a different author' do
+      before(:each) do
+        author = Factory(:author, :email => Factory.next(:email))
+        test_login(author)
+      end
+
+      it 'should not show the post edit link' do
+        get :show, :id => @post.id
+        response.should_not have_selector('a', :href => edit_post_path(@post))
+      end
+
+      it 'should not show the post destroy link' do
+        get :show, :id => @post.id
+        response.should_not have_selector('a', :href => post_path(@post), :content => 'Delete')
+      end
+    end
+
+    context 'as the post author' do
+      before(:each) do
+        test_login(@author)
+      end
+
+      it 'should show the post edit link' do
+        get :show, :id => @post.id
+        response.should have_selector('a', :href => edit_post_path(@post))
+      end
+
+      it 'should show the post destroy link' do
+        get :show, :id => @post.id
+        response.should have_selector('a', :href => post_path(@post), :content => 'Delete')
+      end
+    end
+
+    context 'as an owner' do
+      before(:each) do
+        owner = Factory(:author, :email => Factory.next(:email), :owner => true)
+        test_login(owner)
+      end
+
+      it 'should show the post edit link' do
+        get :show, :id => @post.id
+        response.should have_selector('a', :href => edit_post_path(@post))
+      end
+
+      it 'should show the post destroy link' do
+        get :show, :id => @post.id
+        response.should have_selector('a', :href => post_path(@post), :content => 'Delete')
+      end
     end
   end
 
