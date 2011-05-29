@@ -150,7 +150,7 @@ describe PostsController do
 
     context 'as a different author' do
       before(:each) do
-        current_author = Factory(:author, :name => "Another Author", :email => Factory.next(:email))
+        current_author = Factory(:author, :name => "another author", :email => Factory.next(:email))
         test_login(current_author)
       end
 
@@ -265,41 +265,122 @@ describe PostsController do
   end
 
   describe "PUT update" do
+    before(:each) do
+      @author = Factory(:author)
+      @post = Factory(:post, :author => @author)
+      @attr = { :title => "New Post", :body => "Lorem Ipsum Dolor!" }
+    end
 
-    describe "with valid params" do
-      it "updates the requested post" do
-        Post.should_receive(:find).with("37") { mock_post }
-        mock_post.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :post => {'these' => 'params'}
-      end
-
-      it "assigns the requested post as @post" do
-        Post.stub(:find) { mock_post(:update_attributes => true) }
-        put :update, :id => "1"
-        assigns(:post).should be(mock_post)
-      end
-
-      it "redirects to the post" do
-        Post.stub(:find) { mock_post(:update_attributes => true) }
-        put :update, :id => "1"
-        response.should redirect_to(post_url(mock_post))
+    context 'as an anonymous user' do
+      it "should force the user to log in" do
+        put :update, :id => @post.id, :post => @attr
+        response.should redirect_to(login_path)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the post as @post" do
-        Post.stub(:find) { mock_post(:update_attributes => false) }
-        put :update, :id => "1"
-        assigns(:post).should be(mock_post)
+    context 'as a different author' do
+      before(:each) do
+        current_author = Factory(:author, :name => "another author", :email => Factory.next(:email))
+        test_login(current_author)
       end
 
-      it "re-renders the 'edit' template" do
-        Post.stub(:find) { mock_post(:update_attributes => false) }
-        put :update, :id => "1"
-        response.should render_template("edit")
+      it 'redirects to show page' do
+        get :update, :id => @post.id, :post => @attr
+        response.should redirect_to(post_path(@post))
+      end
+
+      it 'give message stating author cannot edit the post' do
+        get :update, :id => @post.id, :post => @attr
+        flash[:error].should =~ /cannot edit/i
       end
     end
 
+    context "as the post's author" do
+      before(:each) do
+        test_login(@author)
+      end
+
+      context 'with valid attributes' do
+        it "should change the post's attributes" do
+          put :update, :id => @post.id, :post => @attr
+          @post.reload
+          @post.title.should == @attr[:title]
+          @post.body.should == @attr[:body]
+        end
+
+        it "should have a message saying it was updated" do
+          put :update, :id => @post.id, :post => @attr
+          flash[:success].should =~ /updated/
+        end
+
+        it "should redirect to the post show page" do
+          put :update, :id => @post.id, :post => @attr
+          response.should redirect_to(post_path(@post))
+        end
+      end
+
+      context 'with invalid attributes' do
+        it "should not change the post's attributes" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          @post.reload
+          @post.body.should_not == @attr[:body]
+        end
+
+        it "should have the right title" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          response.should have_selector('title', :content => @post.title)
+        end
+
+        it "should render the edit view" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          response.should render_template('edit')
+        end
+      end
+    end
+
+    context "as an owner" do
+      before(:each) do
+        owner = Factory(:author, :email => Factory.next(:email), :owner => true)
+        test_login(owner)
+      end
+
+      context 'with valid attributes' do
+        it "should change the post's attributes" do
+          put :update, :id => @post.id, :post => @attr
+          @post.reload
+          @post.title.should == @attr[:title]
+          @post.body.should == @attr[:body]
+        end
+
+        it "should have a message saying it was updated" do
+          put :update, :id => @post.id, :post => @attr
+          flash[:success].should =~ /updated/
+        end
+
+        it "should redirect to the post show page" do
+          put :update, :id => @post.id, :post => @attr
+          response.should redirect_to(post_path(@post))
+        end
+      end
+
+      context 'with invalid attributes' do
+        it "should not change the post's attributes" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          @post.reload
+          @post.body.should_not == @attr[:body]
+        end
+
+        it "should have the right title" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          response.should have_selector('title', :content => @post.title)
+        end
+
+        it "should render the edit view" do
+          put :update, :id => @post.id, :post => @attr.merge(:title => "")
+          response.should render_template('edit')
+        end
+      end
+    end
   end
 
   describe "DELETE destroy" do

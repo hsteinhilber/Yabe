@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_filter :authenticate, :only => [:new, :edit, :create]
-  before_filter :correct_author, :only => [:edit]
+  before_filter :authenticate, :only => [:new, :edit, :create, :update]
+  before_filter :correct_author, :only => [:edit, :update]
 
   # GET /posts
   # GET /posts.xml
@@ -55,7 +55,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to(@post, :notice => 'Post was successfully created.') }
+        format.html { redirect_to(@post, :flash => {:success => 'Post was successfully created.' } ) }
         format.xml  { render :xml => @post, :status => :created, :location => @post }
         format.json { render :json => @post, :status => :created, :location => @post }
       else
@@ -71,10 +71,11 @@ class PostsController < ApplicationController
   # PUT /posts/1.xml
   def update
     @post = Post.find(params[:id])
+    @title = @post.title
 
     respond_to do |format|
       if @post.update_attributes(params[:post])
-        format.html { redirect_to(@post, :notice => 'Post was successfully updated.') }
+        format.html { redirect_to(@post, :flash => { :success => 'Post was successfully updated.' } ) }
         format.xml  { head :ok }
         format.json { head :ok }
       else
