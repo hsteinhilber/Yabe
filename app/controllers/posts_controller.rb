@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_filter :authenticate, :only => [:new, :edit, :create, :update]
-  before_filter :correct_author, :only => [:edit, :update]
+  before_filter :authenticate, :only => [:new, :edit, :create, :update, :destroy]
+  before_filter :correct_author, :only => [:edit, :update, :destroy]
 
   # GET /posts
   # GET /posts.xml

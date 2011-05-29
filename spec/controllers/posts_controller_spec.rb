@@ -384,17 +384,73 @@ describe PostsController do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested post" do
-      Post.should_receive(:find).with("37") { mock_post }
-      mock_post.should_receive(:destroy)
-      delete :destroy, :id => "37"
+    before(:each) do
+      @author = Factory(:author)
+      @post = Factory(:post, :author => @author)
     end
 
-    it "redirects to the posts list" do
-      Post.stub(:find) { mock_post }
-      delete :destroy, :id => "1"
-      response.should redirect_to(posts_url)
+    context 'as an anonymous user' do
+      it 'should not destroy the post' do
+        lambda do
+          delete :destroy, :id => @post.id
+        end.should_not change(Post,:count)
+      end
+
+      it 'should force the user to log in' do
+        delete :destroy, :id => @post.id
+        response.should redirect_to(login_path)
+      end
+    end
+
+    context 'as a different author' do
+      before(:each) do
+        second_author = Factory(:author, :email => Factory.next(:email))
+        test_login(second_author)
+      end
+
+      it 'does not destroy the post' do
+        lambda do
+          delete :destroy, :id => @post.id
+        end.should_not change(Post,:count)
+      end
+
+      it 'redirects to the show view' do
+        delete :destroy, :id => @post.id
+        response.should redirect_to(post_path(@post))
+      end
+    end
+
+    context "as a post's author" do
+      before(:each) do
+        test_login(@author)
+      end
+
+      it "destroys the requested post" do
+        delete :destroy, :id => @post.id
+        Post.find_by_id(@post.id).should be_nil
+      end
+
+      it "redirects to the posts list" do
+        delete :destroy, :id => @post.id
+        response.should redirect_to(posts_path)
+      end
+    end
+
+    context 'as an owner' do
+      before(:each) do
+        owner = Factory(:author, :email => Factory.next(:email), :owner => true)
+        test_login(owner)
+      end
+
+      it "destroys the requested post" do
+        delete :destroy, :id => @post.id
+        Post.find_by_id(@post.id).should be_nil
+      end
+
+      it "redirects to the posts list" do
+        delete :destroy, :id => @post.id
+        response.should redirect_to(posts_path)
+      end
     end
   end
-
 end
