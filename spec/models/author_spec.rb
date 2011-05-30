@@ -162,7 +162,7 @@ describe Author do
     it "contains only posts for that author" do
       second_author = Factory(:author)
       another_post = Factory(:post, :author => second_author)
-      @author.posts.should == [@post2, @post1]
+      @author.posts.should =~ [@post2, @post1]
     end
 
     it "should destroy related posts" do

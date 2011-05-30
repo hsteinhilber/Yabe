@@ -7,7 +7,7 @@ describe PostsController do
 
     before(:each) do
       @posts = 12.times.map do |n|
-        Factory(:post, :title => "Post ##{n}")
+        Factory(:post, :title => "Post ##{n}", :published_on => Time.now - n)
       end.sort_by { |p| p.published_on }.reverse
     end
 
