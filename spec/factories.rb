@@ -20,3 +20,7 @@ end
 Factory.sequence :email do |n|
   "test-email-#{n+1}@example.com"
 end
+
+Factory.sequence :tag do |n|
+  Tag.create!(:name => "Tag #{n}")
+end

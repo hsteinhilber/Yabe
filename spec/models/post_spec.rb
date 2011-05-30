@@ -99,4 +99,20 @@ describe Post do
       @post.author.should == @author
     end
   end
+
+  describe 'association with tag' do
+    before(:each) do 
+      @post = Factory(:post)
+      @tag = Factory.next(:tag)
+    end
+
+    it 'should have a tags attribute' do
+      @post.should respond_to(:tags)
+    end
+
+    it 'should not allow multiple tags with the same name' do
+      @post.tags = [@tag, @tag]
+      @post.tags.should == [@tag]
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110530135930) do
+ActiveRecord::Schema.define(:version => 20110530171519) do
 
   create_table "authors", :force => true do |t|
     t.string   "name",               :limit => 75
@@ -47,5 +47,14 @@ ActiveRecord::Schema.define(:version => 20110530135930) do
   end
 
   add_index "posts", ["author_id"], :name => "index_posts_on_author_id"
+
+  create_table "posts_tags", :id => false, :force => true do |t|
+    t.integer "post_id"
+    t.integer "tag_id"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
 
 end
