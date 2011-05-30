@@ -31,6 +31,7 @@ namespace :db do
       post = Post.create!(:title => title,
                           :body => body)      
       post.created_at = Time.now - rand(60 * 60 * 24 * 90)
+      post.published_on = post.created_at + rand(60 * 60 * 24 * 5)
       post.save!
       add_comments post
     end

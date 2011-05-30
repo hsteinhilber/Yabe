@@ -6,11 +6,9 @@ describe PostsController do
   describe "GET index" do
 
     before(:each) do
-      @posts = []
-      12.times do |n|
-        @posts << Factory(:post, :title => "Post ##{n}")
-      end
-      @posts = @posts.sort_by { |p| p.created_at }.reverse
+      @posts = 12.times.map do |n|
+        Factory(:post, :title => "Post ##{n}")
+      end.sort_by { |p| p.published_on }.reverse
     end
 
     it "assigns 10 posts as @posts" do
