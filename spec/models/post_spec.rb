@@ -25,18 +25,38 @@ describe Post do
     no_body_post.should_not be_valid
   end
 
-  it "should sort in descending order by created_at by default" do
-    @posts = []
-    10.times do |n|
-      @posts << Factory(:post, :title => "Post ##{n}", :created_at => Time.now - 60 + n)
-    end
-    Post.all.should == @posts.sort_by { |p| p.created_at }.reverse
+  it "should sort in descending order by published_on by default" do
+    posts = 10.times.map do |n|
+      Factory(:post, :title => "Post ##{n}", :published_on => Time.now - rand(n * 1000))
+    end.sort_by { |p| p.published_on }.reverse
+    Post.all.should == posts
   end
 
   it "should allow really long strings" do
     long_body = "a" * 5000
     long_body_post = Post.new(@attr.merge(:body => long_body))
     long_body_post.should be_valid
+  end
+
+  it 'should have a published_on date' do
+    post = Post.new(@attr)
+    post.should respond_to(:published_on)
+  end
+
+  it 'defaults published date to the current date/time if saved without one' do
+    expected = Time.new(2011, 1, 1, 8, 0, 0)
+    Time.stub(:now) { expected }
+    post = Post.create(@attr)
+    post.reload
+    post.published_on.should == expected
+  end
+
+  it 'does not modify published date if set by user' do
+    expected = Time.new(2011, 1, 4, 8, 0, 0)
+    Time.stub(:now) { Time.new(2011, 1, 1, 0, 0, 0) }
+    post = Post.create(@attr.merge(:published_on => expected))
+    post.reload
+    post.published_on.should == expected
   end
 
   describe "association with comments" do

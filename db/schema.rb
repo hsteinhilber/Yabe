@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110526131138) do
+ActiveRecord::Schema.define(:version => 20110530135930) do
 
   create_table "authors", :force => true do |t|
     t.string   "name",               :limit => 75
@@ -38,11 +38,12 @@ ActiveRecord::Schema.define(:version => 20110526131138) do
   add_index "comments", ["post_id"], :name => "index_comments_on_post_id"
 
   create_table "posts", :force => true do |t|
-    t.string   "title",      :limit => 75
+    t.string   "title",        :limit => 75
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "author_id"
+    t.datetime "published_on"
   end
 
   add_index "posts", ["author_id"], :name => "index_posts_on_author_id"
