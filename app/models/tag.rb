@@ -1,10 +1,10 @@
 # == Schema Information
-# Schema version: 20110530165429
+# Schema version: 20110530181624
 #
 # Table name: tags
 #
 #  id   :integer         not null, primary key
-#  name :string(255)
+#  name :string(35)
 #
 
 class Tag < ActiveRecord::Base
