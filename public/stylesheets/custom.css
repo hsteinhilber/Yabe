@@ -115,6 +115,32 @@ nav ul li a:hover {
   text-decoration: underline;
 }
 
+/* Tags */
+#tags {
+  font-size: 1.0em;
+}
+
+#tags ul {
+  display: inline-block;
+}
+
+#tags li {
+  list-style-type: none;
+  display: inline-block;
+  margin: 2px;
+  padding: 3px;
+  border: 1px dashed #800;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+/*#tags li:hover {
+  font-weight: bold;
+  cursor: pointer;
+}*/
+
 /* Errors */
 .field_with_errors input, .field_with_errors select {
   -moz-border-radius: 10px;

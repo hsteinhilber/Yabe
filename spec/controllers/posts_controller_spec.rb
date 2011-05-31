@@ -110,6 +110,13 @@ describe PostsController do
       response.should have_selector('a', :id => "comment_#{@c1.id}")
     end
 
+    it "contains a list of tags" do
+      tag = Factory.next(:tag)
+      @post.tags << tag
+      get :show, :id => @post.id
+      response.should have_selector('li', :content => tag.name)
+    end
+
     context 'as an anonymous user' do
       it 'should not show the post edit link' do
         get :show, :id => @post.id
