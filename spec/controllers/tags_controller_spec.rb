@@ -33,5 +33,11 @@ describe TagsController do
       response.body.should_not =~ /"name":"Rails"/
       response.body.should_not =~ /"name":"Other"/
     end
+
+    it "only returns the first ten results" do
+      15.times { Factory.next(:tag) }
+      get 'index', :format => 'json', :q => "tag"
+      response.body.scan('{"id":').length.should == 10
+    end
   end
 end
