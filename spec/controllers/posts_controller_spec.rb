@@ -247,9 +247,19 @@ describe PostsController do
         response.should be_success
       end
 
-      it 'have the correct title' do
+      it 'has the correct title' do
         get :edit, :id => @post.id
         response.should have_selector('title', :content => @post.title)
+      end
+
+      it 'prefills tag information' do
+        tag = Factory.next(:tag)
+        @post.tags = [tag]
+        json = "[{\"id\":#{tag.id},\"name\":\"#{tag.name}\",\"post_id\":#{@post.id},\"tag_id\":#{tag.id}}]"
+        get :edit, :id => @post.id
+        response.should have_selector('input', 
+                                      :id => 'post_tag_tokens', 
+                                      'data-pre' => json)
       end
     end
 
@@ -266,7 +276,7 @@ describe PostsController do
         response.should be_success
       end
 
-      it 'have the correct title' do
+      it 'has the correct title' do
         get :edit, :id => @post.id
         response.should have_selector('title', :content => @post.title)
       end

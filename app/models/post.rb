@@ -13,7 +13,8 @@
 #
 
 class Post < ActiveRecord::Base
-  attr_accessible :title, :body, :published_on
+  attr_accessible :title, :body, :published_on, :tag_tokens
+  attr_reader :tag_tokens
   belongs_to :author
   has_many :comments, :dependent => :destroy
   has_and_belongs_to_many :tags, :uniq => true
@@ -24,6 +25,10 @@ class Post < ActiveRecord::Base
 
   default_scope :order => 'published_on DESC'
   before_save :set_published_on
+
+  def tag_tokens=(ids)
+    self.tag_ids = ids.split(',')
+  end
 
   private 
     def set_published_on

@@ -4,6 +4,7 @@ Yabe::Application.routes.draw do
   end
   resources :authors
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :tags, :only => [:index]
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'

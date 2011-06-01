@@ -1,4 +1,5 @@
 <%= form_for(@post) do |f| %>
+
   <% if @post.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -19,7 +20,12 @@
     <%= f.label :body %><br />
     <%= f.text_area :body %>
   </div>
+  <div class="field">
+    <%= f.label :tag_tokens, "Tags" %>
+    <%= f.text_field :tag_tokens, 'data-pre' => @post.tags.map(&:attributes).to_json %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
+  <%= javascript_include_tag tags_path(:format => 'js') %>
 <% end %>

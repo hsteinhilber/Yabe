@@ -114,5 +114,12 @@ describe Post do
       @post.tags = [@tag, @tag]
       @post.tags.should == [@tag]
     end
+
+    it 'assigns the proper tags when given tag_tokens' do
+      unused = Factory.next(:tag)
+      tag2 = Factory.next(:tag)
+      @post.tag_tokens = "#{@tag.id},#{tag2.id}"
+      @post.tags.should =~ [@tag, tag2]
+    end
   end
 end
