@@ -339,7 +339,7 @@ $.TokenList = function (input, url_or_data, settings) {
 
     // Inner function to a token to the list
     function insert_token(id, value) {
-        var this_token = $("<li><p>"+ value +"</p> </li>")
+        var this_token = $("<li><p>"+ value.replace('Add - ', '') +"</p> </li>")
           .addClass(settings.classes.token)
           .insertBefore(input_token);
 
@@ -606,7 +606,7 @@ $.TokenList = function (input, url_or_data, settings) {
     // Do a search and show the "searching" dropdown if the input is longer
     // than settings.minChars
     function do_search() {
-        var query = input_box.val().toLowerCase();
+        var query = input_box.val();
 
         if(query && query.length) {
             if(selected_token) {
@@ -666,7 +666,7 @@ $.TokenList = function (input, url_or_data, settings) {
                   cache.add(query, settings.jsonContainer ? results[settings.jsonContainer] : results);
 
                   // only populate the dropdown if the results are associated with the active search query
-                  if(input_box.val().toLowerCase() === query) {
+                  if(input_box.val() === query) {
                       populate_dropdown(query, settings.jsonContainer ? results[settings.jsonContainer] : results);
                   }
                 };

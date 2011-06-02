@@ -121,5 +121,12 @@ describe Post do
       @post.tag_tokens = "#{@tag.id},#{tag2.id}"
       @post.tags.should =~ [@tag, tag2]
     end
+
+    it 'creates a new tag when encountering a token id like "[name]"' do
+      @post.tag_tokens = '[FooBar]'
+      new_tag = Tag.find_by_name('FooBar')
+      new_tag.should_not be_nil
+      @post.tags.should include(new_tag)
+    end
   end
 end

@@ -27,6 +27,7 @@ class Post < ActiveRecord::Base
   before_save :set_published_on
 
   def tag_tokens=(ids)
+    ids.gsub!(/\[(.+)\]/) { Tag.create!(:name => $1).id } 
     self.tag_ids = ids.split(',')
   end
 

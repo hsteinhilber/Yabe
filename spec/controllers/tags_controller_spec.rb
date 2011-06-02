@@ -39,5 +39,16 @@ describe TagsController do
       get 'index', :format => 'json', :q => "tag"
       response.body.scan('{"id":').length.should == 10
     end
+
+    it 'contains an option to add the text if no match' do
+      get 'index', :format => 'json', :q => 'win'
+      response.body.should =~ /"name":"Add - win"/
+    end
+
+    it 'does not contain option to add if match exists' do
+      get 'index', :format => 'json', :q => 'ruby'
+      response.body.should_not =~ /"name":"Add - ruby"/
+    end
   end
+
 end
