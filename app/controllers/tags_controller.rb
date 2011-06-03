@@ -21,7 +21,7 @@ class TagsController < ApplicationController
       return true if params[:q].nil?
       
       tags.any? do |t| 
-        t[:name].casecmp(params[:q].tap{|x|p x}) == 0 
+        t[:name].casecmp(params[:q]) == 0 
       end
     end
 

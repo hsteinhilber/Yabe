@@ -4,7 +4,8 @@ describe CommentsController do
   render_views
 
   before(:each) do
-    @post = Factory(:post)
+    author = Factory(:author, :email => Factory.next(:email))
+    @post = Factory(:post, :author => author)
     @attr = {
       :name => "Example Commenter",
       :email => "commenter@example.com",

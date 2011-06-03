@@ -2,13 +2,31 @@
 
 <%= render_editor_links(@post) %>
 
-<section id="tags">
-  <label>Tags:</label>
-  <ul>
-    <% @post.tags.each do |t| %>
-      <li><%= t.name %></li>
-    <% end %>
-  </ul>
+<section id="metainfo">
+  <div>
+    <label>Written by</label>
+    <span><%= @post.author.name %></span>
+  </div>
+  <div>
+    <label>Created </label>
+    <time datetime="<%= @post.created_at %>" title="<%= @post.created_at.localtime %>">
+      <%= time_ago_in_words(@post.created_at) %> ago
+    </time>
+  </div>
+  <div>
+    <label>Published</label>
+    <time datetime="<%= @post.published_on %>" title="<%= @post.published_on.localtime %>">
+      <%= time_ago_in_words(@post.published_on) %> ago
+    </time>
+  </div>
+  <div>
+    <label>Tags:</label>
+    <ul>
+      <% @post.tags.each do |t| %>
+        <li><%= t.name %></li>
+      <% end %>
+    </ul>
+  </div>
 </section>
 
 <section id="comments">

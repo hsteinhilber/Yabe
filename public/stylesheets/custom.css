@@ -115,16 +115,20 @@ nav ul li a:hover {
   text-decoration: underline;
 }
 
-/* Tags */
-#tags {
+/* Metadata */
+#metainfo {
   font-size: 1.0em;
 }
 
-#tags ul {
+#metainfo label {
+  font-size: 1.1em;
+}
+
+#metainfo ul {
   display: inline-block;
 }
 
-#tags li {
+#metainfo li {
   list-style-type: none;
   display: inline-block;
   margin: 2px;
@@ -135,11 +139,6 @@ nav ul li a:hover {
   border-radius: 5px;
   background-color: #eee;
 }
-
-/*#tags li:hover {
-  font-weight: bold;
-  cursor: pointer;
-}*/
 
 /* Token input */
 ul.token-input-list {

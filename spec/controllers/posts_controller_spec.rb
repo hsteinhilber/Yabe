@@ -117,6 +117,27 @@ describe PostsController do
       response.should have_selector('li', :content => tag.name)
     end
 
+    it "contains the publication date/time" do
+      Time.stub(:now) { Time.new(2011,1,2,11,30,0) }
+      (@post.published_on = Time.new(2011,1,1,9,30,0)) && @post.save!
+      get :show, :id => @post.id
+      response.should have_selector('time', :content => "1 day ago", :datetime => @post.published_on.to_s)
+      response.should have_selector('time', :title => @post.published_on.localtime.to_s)
+    end
+
+    it "contains the date the the post was originally created" do
+      Time.stub(:now) { Time.new(2011,1,4,11,30,0) }
+      (@post.created_at = Time.new(2011,1,3,9,30,0)) && @post.save!
+      get :show, :id => @post.id
+      response.should have_selector('time', :content => "1 day ago", :datetime => @post.created_at.to_s)
+      response.should have_selector('time', :title => @post.created_at.localtime.to_s)
+    end
+
+    it "contains the name of the author" do
+      get :show, :id => @post.id
+      response.should have_selector('span', :content => @author.name)
+    end
+
     context 'as an anonymous user' do
       it 'should not show the post edit link' do
         get :show, :id => @post.id
