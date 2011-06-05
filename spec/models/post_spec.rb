@@ -128,6 +128,14 @@ describe Post do
       new_tag.should_not be_nil
       @post.tags.should include(new_tag)
     end
+
+    it 'creates multiple tags when encounting multiple add token ids' do
+      @post.tag_tokens = '[Hello],[World]'
+      tag1, tag2 = Tag.find_by_name('Hello'), Tag.find_by_name('World')
+      tag1.should_not be_nil
+      tag2.should_not be_nil
+      @post.tags.should =~ [tag1, tag2]
+    end
   end
 
   describe 'slugs' do
