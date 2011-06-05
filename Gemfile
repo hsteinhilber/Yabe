@@ -5,6 +5,7 @@ gem 'rails', '3.0.7'
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
 gem 'will_paginate', '3.0.pre2'
+gem 'friendly_id'
 gem 'heroku'
 
 group :development, :test do
