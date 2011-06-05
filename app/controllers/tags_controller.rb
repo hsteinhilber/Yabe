@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
   def index
-    tags = Tag.where('name like ?', "%#{params[:q]}%")
-      .take(10).map { |t| { :id => t.id, :name => t.name } }
+    tags = Tag.where('name like ?', "%#{params[:q]}%").take(10).map { |t| { :id => t.id, :name => t.name } }
+      
 
     unless has_match(tags)
       tags = [{ 
