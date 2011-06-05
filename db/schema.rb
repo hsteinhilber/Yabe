@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110530181624) do
+ActiveRecord::Schema.define(:version => 20110605162329) do
 
   create_table "authors", :force => true do |t|
     t.string   "name",               :limit => 75
@@ -44,14 +44,28 @@ ActiveRecord::Schema.define(:version => 20110530181624) do
     t.datetime "updated_at"
     t.integer  "author_id"
     t.datetime "published_on"
+    t.string   "cached_slug"
   end
 
   add_index "posts", ["author_id"], :name => "index_posts_on_author_id"
+  add_index "posts", ["cached_slug"], :name => "index_posts_on_cached_slug", :unique => true
 
   create_table "posts_tags", :id => false, :force => true do |t|
     t.integer "post_id"
     t.integer "tag_id"
   end
+
+  create_table "slugs", :force => true do |t|
+    t.string   "name"
+    t.integer  "sluggable_id"
+    t.integer  "sequence",                     :default => 1, :null => false
+    t.string   "sluggable_type", :limit => 40
+    t.string   "scope"
+    t.datetime "created_at"
+  end
+
+  add_index "slugs", ["name", "sluggable_type", "sequence", "scope"], :name => "index_slugs_on_n_s_s_and_s", :unique => true
+  add_index "slugs", ["sluggable_id"], :name => "index_slugs_on_sluggable_id"
 
   create_table "tags", :force => true do |t|
     t.string "name", :limit => 35
