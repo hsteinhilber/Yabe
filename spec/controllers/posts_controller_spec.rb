@@ -13,7 +13,7 @@ describe PostsController do
 
     it "assigns 10 posts as @posts" do
       get :index
-      assigns(:posts).should == @posts.take(10)
+      assigns(:posts).count.should == 10
     end
 
     it "should paginate the posts" do
@@ -136,6 +136,11 @@ describe PostsController do
     it "contains the name of the author" do
       get :show, :id => @post.id
       response.should have_selector('span', :content => @author.name)
+    end
+
+    it "uses slug in post paths" do
+      post = Factory(:post, :title => "My Cool Title")
+      post_path(post).should =~ /my-cool-title/i
     end
 
     context 'as an anonymous user' do
@@ -418,6 +423,7 @@ describe PostsController do
 
         it "should redirect to the post show page" do
           put :update, :id => @post.id, :post => @attr
+          @post.reload
           response.should redirect_to(post_path(@post))
         end
       end
@@ -462,6 +468,7 @@ describe PostsController do
 
         it "should redirect to the post show page" do
           put :update, :id => @post.id, :post => @attr
+          @post.reload
           response.should redirect_to(post_path(@post))
         end
       end

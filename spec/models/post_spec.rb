@@ -129,4 +129,18 @@ describe Post do
       @post.tags.should include(new_tag)
     end
   end
+
+  describe 'slugs' do
+    before(:each) do
+      @post = Factory(:post, :title => 'My Basic Title')
+    end
+
+    it 'responds to slug' do
+      @post.should respond_to(:slug)
+    end
+
+    it 'has a slug based on it\'s title' do
+      @post.slug.name.should == 'my-basic-title'
+    end
+  end
 end
