@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110530135930
+# Schema version: 20110606111155
 #
 # Table name: posts
 #
@@ -10,6 +10,9 @@
 #  updated_at   :datetime
 #  author_id    :integer
 #  published_on :datetime
+#  cached_slug  :string(255)
+#  month        :integer
+#  year         :integer
 #
 
 class Post < ActiveRecord::Base
@@ -25,7 +28,7 @@ class Post < ActiveRecord::Base
   validates :body, :presence => true
 
   default_scope :order => 'published_on DESC'
-  before_save :set_published_on
+  before_save :on_before_save
 
   def tag_tokens=(ids)
     ids.gsub!(/\[(.+?)\]/) { Tag.create!(:name => $1).id } 
@@ -33,8 +36,10 @@ class Post < ActiveRecord::Base
   end
 
   private 
-    def set_published_on
+    def on_before_save
       self.published_on ||= Time.now
+      self.month = self.published_on.month
+      self.year = self.published_on.year
     end
 
 end

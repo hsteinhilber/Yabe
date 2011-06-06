@@ -38,25 +38,39 @@ describe Post do
     long_body_post.should be_valid
   end
 
-  it 'should have a published_on date' do
-    post = Post.new(@attr)
-    post.should respond_to(:published_on)
-  end
+  describe 'publication date' do
+    it 'exists' do
+      post = Post.new(@attr)
+      post.should respond_to(:published_on)
+    end
 
-  it 'defaults published date to the current date/time if saved without one' do
-    expected = Time.new(2011, 1, 1, 8, 0, 0)
-    Time.stub(:now) { expected }
-    post = Post.create(@attr)
-    post.reload
-    post.published_on.should == expected
-  end
+    it 'defaults to the current date/time if saved without one' do
+      expected = Time.new(2011, 1, 1, 8, 0, 0)
+      Time.stub(:now) { expected }
+      post = Post.create(@attr)
+      post.reload
+      post.published_on.should == expected
+    end
 
-  it 'does not modify published date if set by user' do
-    expected = Time.new(2011, 1, 4, 8, 0, 0)
-    Time.stub(:now) { Time.new(2011, 1, 1, 0, 0, 0) }
-    post = Post.create(@attr.merge(:published_on => expected))
-    post.reload
-    post.published_on.should == expected
+    it 'is not modified if set by user' do
+      expected = Time.new(2011, 1, 4, 8, 0, 0)
+      Time.stub(:now) { Time.new(2011, 1, 1, 0, 0, 0) }
+      post = Post.create(@attr.merge(:published_on => expected))
+      post.reload
+      post.published_on.should == expected
+    end
+
+    it 'sets the month filter attribute' do
+      published = Time.new(2011, 7, 2, 9, 30, 0)
+      post = Post.create(@attr.merge(:published_on => published))
+      post.month.should == 7
+    end
+
+    it 'sets the year filter attribute' do
+      published = Time.new(2011, 7, 2, 9, 30, 0)
+      post = Post.create(@attr.merge(:published_on => published))
+      post.year.should == 2011 
+    end
   end
 
   describe "association with comments" do
