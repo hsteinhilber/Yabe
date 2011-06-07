@@ -27,7 +27,7 @@ describe Post do
 
   it "should sort in descending order by published_on by default" do
     posts = 10.times.map do |n|
-      Factory(:post, :title => "Post ##{n}", :published_on => Time.now - rand(n * 1000))
+      Factory(:post, :title => "Post ##{n}", :published_on => n.minutes.ago)
     end.sort_by { |p| p.published_on }.reverse
     Post.all.should == posts
   end
@@ -70,6 +70,11 @@ describe Post do
       published = Time.new(2011, 7, 2, 9, 30, 0)
       post = Post.create(@attr.merge(:published_on => published))
       post.year.should == 2011 
+    end
+
+    it 'filters out dates in the future' do
+      future_post = Post.create(@attr.merge(:published_on => 1.minute.from_now))
+      Post.all.should_not include(future_post)
     end
   end
 

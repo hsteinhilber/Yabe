@@ -27,7 +27,7 @@ class Post < ActiveRecord::Base
                     :length => { :maximum => 75 }
   validates :body, :presence => true
 
-  default_scope :order => 'published_on DESC'
+  default_scope where('published_on <= :published', :published => 1.minute.from_now).order('published_on DESC')
   before_save :on_before_save
 
   def tag_tokens=(ids)
