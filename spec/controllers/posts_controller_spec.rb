@@ -563,4 +563,58 @@ describe PostsController do
       end
     end
   end
+
+  describe 'post history partial' do
+    before(:each) do
+      author = Factory(:author)
+      Factory(:post, :author => author)
+      16.times do |n|
+        Factory(:post, :author => author, :published_on => n.months.ago)
+      end
+    end
+
+    %w[index show].each do |action|
+      context "GET #{action}" do
+        it 'sets post_history' do
+          get action, :id => Post.first
+          assigns(:post_history).should_not be_nil
+        end
+
+        it 'has at least one result' do
+          get action, :id => Post.first
+          assigns(:post_history).count.should > 0
+        end
+
+        %w[month month_name year post_count].each do |attr|
+          it "gives #{attr.pluralize.humanize.downcase}" do
+            get action, :id => Post.first
+            assigns(:post_history).all? { |x| x.include? attr.to_sym }.should be_true
+          end
+        end
+
+        15.times do |n|
+          month = n.months.ago.month
+          year = n.months.ago.year
+          month_name = Date::MONTHNAMES[month]
+          expected_count = (n == 0 ? 2 : 1)
+          it "contains an entry for #{month}/#{year}" do
+            get action, :id => Post.first
+            assigns(:post_history).should include_hash({:month => month, :year => year})
+          end
+          
+          it "shows #{expected_count} posts for #{month}/#{year}" do
+            get action, :id => Post.first
+            item = assigns(:post_history).find { |posts| posts[:month] == month && posts[:year] == year }
+            item.should include(:post_count => expected_count)
+          end
+
+          it "returns #{month_name} as the name of the month for #{month}/#{year}" do
+            get action, :id => Post.first
+            item = assigns(:post_history).find { |posts| posts[:month] == month && posts[:year] == year }
+            item.should include(:month_name => month_name)
+          end
+        end
+      end
+    end
+  end
 end

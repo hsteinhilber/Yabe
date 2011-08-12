@@ -47,6 +47,25 @@ Spork.prefork do
       fill_in :password, :with => author.password
       click_button
     end
+
+    RSpec::Matchers.define :include_hash do |expected|
+      match do |actual|
+        expected.stringify_keys!
+        actual.find { |i| i.present? && i.stringify_keys.slice(*expected.keys) == expected }
+      end
+
+      failure_message_for_should do |actual|
+        "expected #{actual} would contain a hash that is equal or a superset of #{expected}"
+      end
+
+      failure_message_for_should_not do |actual|
+        "expected #{actual} would contain a hash that is not equal or a superset of #{expected}"
+      end
+
+      description do
+        "contain a hash that is equal to or a superset of #{expected}"
+      end
+    end
   end
 end
 
