@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'nokogiri', '~>1.4.4'
+gem 'nokogiri', '~>1.4.3.0'
 gem 'rails', '3.0.7'
 gem 'jquery-rails'
 gem 'gravatar_image_tag'
